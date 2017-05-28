@@ -120,8 +120,13 @@ class DaemonRunner:
         self.daemon_context = DaemonContext()
         self.daemon_context.stdin = open(app.stdin_path, 'rt')
         self.daemon_context.stdout = open(app.stdout_path, 'w+t')
-        self.daemon_context.stderr = open(
+        try:
+            self.daemon_context.stderr = open(
                 app.stderr_path, 'w+t', buffering=0)
+        except ValueError:
+            # Python 3 can't have unbuffered text I/O
+            self.daemon_context.stderr = open(
+                app.stderr_path, 'w+t', buffering=1)
 
         self.pidfile = None
         if app.pidfile_path is not None:
