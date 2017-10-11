@@ -1230,59 +1230,6 @@ class prevent_core_dump_TestCase(scaffold.TestCase):
         self.assertEqual(test_error, exc.__cause__)
 
 
-@mock.patch.object(os, "close")
-class close_file_descriptor_if_open_TestCase(scaffold.TestCase):
-    """ Test cases for close_file_descriptor_if_open function. """
-
-    def setUp(self):
-        """ Set up test fixtures. """
-        super(close_file_descriptor_if_open_TestCase, self).setUp()
-
-        self.fake_fd = 274
-
-    def test_requests_file_descriptor_close(self, mock_func_os_close):
-        """ Should request close of file descriptor. """
-        fd = self.fake_fd
-        daemon.daemon.close_file_descriptor_if_open(fd)
-        mock_func_os_close.assert_called_with(fd)
-
-    def test_ignores_badfd_error_on_close(self, mock_func_os_close):
-        """ Should ignore OSError EBADF when closing. """
-        fd = self.fake_fd
-        test_error = OSError(errno.EBADF, "Bad file descriptor")
-        def fake_os_close(fd):
-            raise test_error
-        mock_func_os_close.side_effect = fake_os_close
-        daemon.daemon.close_file_descriptor_if_open(fd)
-        mock_func_os_close.assert_called_with(fd)
-
-    def test_raises_error_if_oserror_on_close(self, mock_func_os_close):
-        """ Should raise DaemonError if an OSError occurs when closing. """
-        fd = self.fake_fd
-        test_error = OSError(object(), "Unexpected error")
-        def fake_os_close(fd):
-            raise test_error
-        mock_func_os_close.side_effect = fake_os_close
-        expected_error = daemon.daemon.DaemonOSEnvironmentError
-        exc = self.assertRaises(
-                expected_error,
-                daemon.daemon.close_file_descriptor_if_open, fd)
-        self.assertEqual(test_error, exc.__cause__)
-
-    def test_raises_error_if_ioerror_on_close(self, mock_func_os_close):
-        """ Should raise DaemonError if an IOError occurs when closing. """
-        fd = self.fake_fd
-        test_error = IOError(object(), "Unexpected error")
-        def fake_os_close(fd):
-            raise test_error
-        mock_func_os_close.side_effect = fake_os_close
-        expected_error = daemon.daemon.DaemonOSEnvironmentError
-        exc = self.assertRaises(
-                expected_error,
-                daemon.daemon.close_file_descriptor_if_open, fd)
-        self.assertEqual(test_error, exc.__cause__)
-
-
 class maxfd_TestCase(scaffold.TestCase):
     """ Test cases for module MAXFD constant. """
 
@@ -1374,35 +1321,30 @@ def fake_get_maximum_file_descriptors():
 @mock.patch.object(
         daemon.daemon, "get_maximum_file_descriptors",
         new=fake_get_maximum_file_descriptors)
-@mock.patch.object(daemon.daemon, "close_file_descriptor_if_open")
+@mock.patch.object(os, "closerange")
 class close_all_open_files_TestCase(scaffold.TestCase):
     """ Test cases for close_all_open_files function. """
 
-    def test_requests_all_open_files_to_close(
-            self, mock_func_close_file_descriptor_if_open):
+    def test_requests_all_open_files_to_close(self, mock_os_closerange):
         """ Should request close of all open files. """
-        expected_file_descriptors = range(fake_default_maxfd)
-        expected_calls = [
-                mock.call(fd) for fd in expected_file_descriptors]
+        expected_calls = [mock.call(0, fake_default_maxfd)]
         daemon.daemon.close_all_open_files()
-        mock_func_close_file_descriptor_if_open.assert_has_calls(
-                expected_calls, any_order=True)
+        mock_os_closerange.assert_has_calls(expected_calls, any_order=True)
 
     def test_requests_all_but_excluded_files_to_close(
-            self, mock_func_close_file_descriptor_if_open):
+            self, mock_os_closerange):
         """ Should request close of all open files but those excluded. """
         test_exclude = set([3, 7])
         args = dict(
                 exclude=test_exclude,
                 )
-        expected_file_descriptors = set(
-                fd for fd in range(fake_default_maxfd)
-                if fd not in test_exclude)
         expected_calls = [
-                mock.call(fd) for fd in expected_file_descriptors]
+                mock.call(0, 3), mock.call(4, 7),
+        ]
+        if fake_default_maxfd > 8:
+            expected_calls.append(mock.call(8, fake_default_maxfd))
         daemon.daemon.close_all_open_files(**args)
-        mock_func_close_file_descriptor_if_open.assert_has_calls(
-                expected_calls, any_order=True)
+        mock_os_closerange.assert_has_calls(expected_calls, any_order=True)
 
 
 class detach_process_context_TestCase(scaffold.TestCase):

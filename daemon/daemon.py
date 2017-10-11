@@ -802,29 +802,6 @@ def is_detach_process_context_required():
 
     return result
 
-
-def close_file_descriptor_if_open(fd):
-    """ Close a file descriptor if already open.
-
-        :param fd: The file descriptor to close.
-        :return: ``None``.
-
-        Close the file descriptor `fd`, suppressing an error in the
-        case the file was not open.
-
-        """
-    try:
-        os.close(fd)
-    except EnvironmentError as exc:
-        if exc.errno == errno.EBADF:
-            # File descriptor was not open.
-            pass
-        else:
-            error = DaemonOSEnvironmentError(
-                    "Failed to close file descriptor {fd:d} ({exc})".format(
-                        fd=fd, exc=exc))
-            raise error
-
 
 MAXFD = 2048
 
@@ -860,12 +837,24 @@ def close_all_open_files(exclude=None):
         close.
 
         """
-    if exclude is None:
-        exclude = set()
-    maxfd = get_maximum_file_descriptors()
-    for fd in reversed(range(maxfd)):
-        if fd not in exclude:
-            close_file_descriptor_if_open(fd)
+    min_fd = 0
+    max_fd = get_maximum_file_descriptors()
+
+    if not exclude:
+        os.closerange(min_fd, max_fd)
+        return
+
+    for ex_fd in sorted(exclude):
+        if ex_fd < min_fd:
+            continue
+        if ex_fd == min_fd:
+            min_fd = ex_fd + 1
+            continue
+        os.closerange(min_fd, ex_fd)
+        min_fd = ex_fd + 1
+
+    if min_fd and min_fd < max_fd:
+        os.closerange(min_fd, max_fd)
 
 
 def redirect_stream(system_stream, target_stream):
