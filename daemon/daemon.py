@@ -868,11 +868,20 @@ def get_maximum_file_descriptors():
         of ``MAXFD`` is returned.
 
         """
+
     (__, hard_limit) = resource.getrlimit(resource.RLIMIT_NOFILE)
 
     result = hard_limit
     if hard_limit == resource.RLIM_INFINITY:
         result = MAXFD
+
+    try:
+        pid = os.getpid()
+        path = "/proc/{}/fd".format(pid)
+        fds = [int(x) for x in os.listdir(path)]
+        result = max(fds) + 2
+    except Exception as e:
+        pass
 
     return result
 
@@ -923,6 +932,10 @@ def _get_candidate_file_descriptor_ranges(exclude):
     this_range = FileDescriptorRange(
             low=min(candidates_list),
             high=(min(candidates_list) + 1))
+    max_ex = None
+    if (exclude != None):
+        max_ex = max(exclude)
+    # else, close entire range?
     for fd in candidates_list[1:]:
         high = fd + 1
         if this_range.high == fd:
@@ -932,6 +945,9 @@ def _get_candidate_file_descriptor_ranges(exclude):
             # The previous range has ended at a gap.
             ranges.append(this_range)
             # This file descriptor begins a new range.
+            if (max_ex != None and fd > max_ex):
+                this_range = FileDescriptorRange(low=fd, high=candidates_list[-1])
+                break
             this_range = FileDescriptorRange(low=fd, high=high)
     ranges.append(this_range)
     return ranges
@@ -964,6 +980,7 @@ def close_all_open_files(exclude=None):
         """
     if exclude is None:
         exclude = set()
+
     fd_ranges = _get_candidate_file_descriptor_ranges(exclude=exclude)
     _close_file_descriptor_ranges(ranges=fd_ranges)
 
