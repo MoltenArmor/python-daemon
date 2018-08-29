@@ -56,9 +56,6 @@ setup_kwargs = dict(
 
         # Setuptools metadata.
         zip_safe=False,
-        setup_requires=[
-            "docutils",
-            ],
         test_suite="setup.test_suite",
         tests_require=[
             "unittest2 >=0.5.1",
@@ -68,6 +65,10 @@ setup_kwargs = dict(
             "docutils",
             ],
         install_requires=[
+            "docutils",  # Technically only required by the build step,
+                         # but common install tools like Setuptools
+                         # and pip don't respect "setup_requires" yet.
+                         # See <URL:https://github.com/pypa/setuptools/issues/457>.
             "setuptools",
             "lockfile >=0.10",
             ],
@@ -91,11 +92,6 @@ setup_kwargs = dict(
             "Topic :: Software Development :: Libraries :: Python Modules",
             ],
         )
-
-# Docutils is only required for building, but Setuptools can't distinguish
-# dependencies properly.
-# See <URL:https://github.com/pypa/setuptools/issues/457>.
-setup_kwargs['install_requires'].append("docutils")
 
 
 if __name__ == '__main__':
