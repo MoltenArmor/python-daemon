@@ -192,6 +192,14 @@ changes to existing code, will only be considered for inclusion in the
 development tree when accompanied by corresponding additions or
 changes to the unit tests.
 
+To launch unit test using the following commands::
+
+   $ tox
+
+You can also check specific environment by using::
+
+   $ tox -e py37
+
 Test-driven development
 -----------------------
 
