@@ -1446,7 +1446,7 @@ def make_total_file_descriptor_range_patch(testcase, fake_maxfd):
         """
     attr_patcher = mock.patch.object(
             daemon.daemon, "_total_file_descriptor_range",
-            new=daemon.daemon.FileDescriptorRange(0, fake_maxfd))
+            new=(0, fake_maxfd))
     return attr_patcher
 
 
@@ -1459,8 +1459,7 @@ def make_total_file_descriptor_set_patch(testcase, fake_maxfd):
         """
     attr_patcher = mock.patch.object(
             daemon.daemon, "_total_file_descriptor_set",
-            new=set(
-                range(*daemon.daemon.FileDescriptorRange(0, fake_maxfd))))
+            new=set(range(0, fake_maxfd)))
     return attr_patcher
 
 
@@ -1612,7 +1611,7 @@ class _close_file_descriptor_ranges_TestCase(scaffold.TestCaseWithScenarios):
             ('ranges-one', {
                 'test_kwargs': {
                     'ranges': [
-                        daemon.daemon.FileDescriptorRange(0, 10),
+                        (0, 10),
                         ],
                     },
                 'expected_os_closerange_calls': [
@@ -1622,9 +1621,9 @@ class _close_file_descriptor_ranges_TestCase(scaffold.TestCaseWithScenarios):
             ('ranges-three', {
                 'test_kwargs': {
                     'ranges': [
-                        daemon.daemon.FileDescriptorRange(5, 10),
-                        daemon.daemon.FileDescriptorRange(0, 3),
-                        daemon.daemon.FileDescriptorRange(15, 20),
+                        (5, 10),
+                        (0, 3),
+                        (15, 20),
                         ],
                     },
                 'expected_os_closerange_calls': [
