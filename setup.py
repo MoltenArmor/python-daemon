@@ -67,8 +67,7 @@ setup_kwargs = dict(
         # Setuptools metadata.
         zip_safe=False,
         setup_requires=[
-            "docutils",
-            "twine",
+            "docutils"
             ],
         test_suite="setup.test_suite",
         tests_require=test_requirements,
@@ -77,6 +76,9 @@ setup_kwargs = dict(
             "lockfile >=0.10",
             ],
         extras_require={
+            'dev': [
+                'twine'
+            ],
             'test': test_requirements,
             },
 

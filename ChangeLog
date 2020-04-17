@@ -14,7 +14,7 @@ Version NEXT
 :Released: FUTURE
 :Maintainer: UNKNOWN <unknown@example.org>
 
-No changes.
+* Declare Twine as a dev dependency instead of build dependency.
 
 
 Version 2.2.4

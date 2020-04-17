@@ -18,13 +18,18 @@ TWINE_DIST_FILES ?= ${DIST_DIR}/*
 
 
 .PHONY: twine-upload
-twine-upload: setuptools-dist
+twine-upload: setuptools-dist pip-install-dev-requirements
 	$(PYTHON_TWINE) upload ${PYTHON_TWINE_UPLOAD_OPTS} ${TWINE_DIST_FILES}
 
 
 .PHONY: twine-check
-twine-check: setuptools-dist
+twine-check: setuptools-dist pip-install-dev-requirements
 	$(PYTHON_TWINE) check ${TWINE_DIST_FILES}
+
+
+.PHONY: pip-install-dev-requirements
+pip-install-dev-requirements:
+	$(PYTHON) -m pip install .[dev]
 
 
 # Copyright © 2006–2019 Ben Finney <ben+python@benfinney.id.au>
