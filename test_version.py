@@ -28,7 +28,12 @@ import textwrap
 import docutils
 import docutils.nodes
 import docutils.writers
-import mock
+
+try:
+    from unittest import mock
+except ImportError:
+    import mock
+
 import setuptools
 import setuptools.command
 import testscenarios

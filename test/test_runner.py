@@ -26,7 +26,11 @@ import signal
 import sys
 
 import lockfile
-import mock
+
+try:
+    from unittest import mock
+except ImportError:
+    import mock
 
 from . import scaffold
 from .scaffold import unicode

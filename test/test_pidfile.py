@@ -26,7 +26,11 @@ import os
 import tempfile
 
 import lockfile
-import mock
+
+try:
+    from unittest import mock
+except ImportError:
+    import mock
 
 from . import scaffold
 

@@ -48,7 +48,7 @@ test_requirements = [
         "unittest2 >=0.5.1",
         "testtools",
         "testscenarios >=0.4",
-        "mock >=1.3",
+        "mock >=1.3;python_version<'3.3'",
         "coverage",
         "docutils",
         ]

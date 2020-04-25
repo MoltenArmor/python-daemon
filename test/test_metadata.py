@@ -24,7 +24,11 @@ except ImportError:
     # Python 2 standard library.
     import urlparse
 
-import mock
+try:
+    from unittest import mock
+except ImportError:
+    import mock
+
 import pkg_resources
 import testtools.helpers
 import testtools.matchers

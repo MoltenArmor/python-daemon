@@ -25,7 +25,10 @@ import sys
 import tempfile
 from types import ModuleType
 
-import mock
+try:
+    from unittest import mock
+except ImportError:
+    import mock
 
 from . import scaffold
 from .scaffold import unicode
