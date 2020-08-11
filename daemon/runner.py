@@ -131,12 +131,8 @@ class DaemonRunner:
             """
         self.daemon_context.stdin = open(app.stdin_path, 'rt')
         self.daemon_context.stdout = open(app.stdout_path, 'w+t')
-        try:
-            self.daemon_context.stderr = open(
-                    app.stderr_path, 'w+t', buffering=0)
-        except:
-            self.daemon_context.stderr = open(
-                    app.stderr_path, 'wb+', buffering=0)
+        self.daemon_context.stderr = open(
+            app.stderr_path, 'w+t', buffering=1)
 
     def _usage_exit(self, argv):
         """ Emit a usage message, then exit.
