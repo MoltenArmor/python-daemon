@@ -983,7 +983,15 @@ def redirect_stream(system_stream, target_stream):
         target_fd = os.open(os.devnull, os.O_RDWR)
     else:
         target_fd = target_stream.fileno()
-    os.dup2(target_fd, system_stream.fileno())
+    system_stream_fd = system_stream.fileno()
+    if target_fd == system_stream_fd:
+        try:
+            os.set_inheritable(target_fd, True)
+        except AttributeError:
+            # python < 3.4
+            pass
+    else:
+        os.dup2(target_fd, system_stream.fileno())
 
 
 def make_default_signal_map():

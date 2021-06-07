@@ -26,6 +26,7 @@ import tempfile
 from types import ModuleType
 
 import mock
+import unittest
 
 from . import scaffold
 from .scaffold import unicode
@@ -2034,6 +2035,25 @@ class redirect_stream_TestCase(scaffold.TestCase):
         daemon.daemon.redirect_stream(system_stream, target_stream)
         self.mock_func_os_open.assert_called_with(null_path, null_flag)
         mock_func_os_dup2.assert_called_with(null_fileno, system_fileno)
+
+    @unittest.skipIf(
+            sys.version_info < (3, 4),
+            "inheritable attribute was added in python 3.4")
+    @mock.patch.object(os, "set_inheritable")
+    def test_duplicate_is_inheritable(
+            self, mock_func_os_set_inheritable, _):
+        """ The system streams should be inheritable.
+
+            dup2 sets the new file descriptors to be inhertiable. But if the
+            old and new file descriptors are equal, the inhertiable attribute
+            is not changed.
+            If the system streams aren't inhertiable they would not be copied
+            to any children of the daemon.
+            """
+        system_stream = self.test_system_stream
+        system_fileno = system_stream.fileno()
+        daemon.daemon.redirect_stream(system_stream, system_stream)
+        mock_func_os_set_inheritable.assert_called_with(system_fileno, True)
 
 
 class make_default_signal_map_TestCase(scaffold.TestCase):
