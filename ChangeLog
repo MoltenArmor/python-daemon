@@ -14,7 +14,9 @@ Version NEXT
 :Released: FUTURE
 :Maintainer: UNKNOWN <unknown@example.org>
 
-No changes.
+Bugs Fixed:
+
+* Make the dependency on ‘docutils’ packaging-only, as it is not used on runtime.
 
 
 Version 2.2.4

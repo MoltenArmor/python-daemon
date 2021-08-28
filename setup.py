@@ -101,11 +101,6 @@ setup_kwargs = dict(
             ],
         )
 
-# Docutils is only required for building, but Setuptools can't distinguish
-# dependencies properly.
-# See <URL:https://github.com/pypa/setuptools/issues/457>.
-setup_kwargs['install_requires'].append("docutils")
-
 
 if __name__ == '__main__':
     setup(**setup_kwargs)
