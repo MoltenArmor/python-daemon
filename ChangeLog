@@ -84,6 +84,12 @@ Bugs Fixed:
 
   Closes: Pagure #72. Thanks to Anton Anton for the report.
 
+* Set file handles (MS Windows only) of standard streams to be
+  inheritable.
+
+  Closes: Pagure #57. Thanks to Juern Brodersen for the report and
+  test case.
+
 Added:
 
 * Document a `ServiceRunner` class as an example of using `DaemonContext`.
