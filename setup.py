@@ -58,6 +58,7 @@ setup_kwargs = dict(
 
         # Setuptools metadata.
         zip_safe=False,
+        python_requires=">=3",
         setup_requires=[
             "docutils",
             ],
