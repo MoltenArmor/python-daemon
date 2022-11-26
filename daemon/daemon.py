@@ -865,7 +865,6 @@ def get_maximum_file_descriptors():
 
 
 _total_file_descriptor_range = (0, get_maximum_file_descriptors())
-_total_file_descriptor_set = set(range(*_total_file_descriptor_range))
 
 
 def _validate_fd_values(fds):
@@ -884,27 +883,6 @@ def _validate_fd_values(fds):
                 "not an integer file descriptor", value_to_complain_about)
 
 
-def _get_candidate_file_descriptors(exclude):
-    """ Get the collection of candidate file descriptors.
-
-        :param exclude: A collection of file descriptors that should
-            be excluded from the return set.
-        :return: The collection (a `set`) of file descriptors that are
-            candidates for files that may be open in this process.
-
-        Determine the set of all `int` values that could be open file
-        descriptors in this process. A file descriptor is a candidate
-        if it is within the range (0, `maxfd`), excluding those
-        integers in the `exclude` collection.
-
-        The `maxfd` value is determined from the standard library
-        `resource` module.
-        """
-    _validate_fd_values(exclude)
-    candidates = _total_file_descriptor_set.difference(exclude)
-    return candidates
-
-
 def _get_candidate_file_descriptor_ranges(exclude):
     """ Get the collection of candidate file descriptor ranges.
 
@@ -921,29 +899,26 @@ def _get_candidate_file_descriptor_ranges(exclude):
         in this process, excluding those integers in the `exclude`
         collection.
         """
-    candidates_list = sorted(_get_candidate_file_descriptors(exclude))
+    _validate_fd_values(exclude)
+    exclude = sorted(exclude)
+    upper_range = _total_file_descriptor_range
     ranges = []
 
-    def append_range_if_needed(candidate_range):
-        (low, high) = candidate_range
-        if (low < high):
-            # The range is not empty.
-            ranges.append(candidate_range)
+    for fd in exclude:
+        if fd > upper_range[1]:
+            # All other fds are outside of total range.
+            break
+        if fd < upper_range[0]:
+            # Underflow, skip.
+            continue
+        if fd != upper_range[0]:
+            ranges.append((upper_range[0], fd))
+        upper_range = (fd + 1, upper_range[1])
 
-    this_range = (
-        (min(candidates_list), (min(candidates_list) + 1))
-        if candidates_list else (0, 0))
-    for fd in candidates_list[1:]:
-        high = fd + 1
-        if this_range[1] == fd:
-            # This file descriptor extends the current range.
-            this_range = (this_range[0], high)
-        else:
-            # The previous range has ended at a gap.
-            append_range_if_needed(this_range)
-            # This file descriptor begins a new range.
-            this_range = (fd, high)
-    append_range_if_needed(this_range)
+    if upper_range[0] < upper_range[1]:
+        # Append if there is still a valid range left.
+        ranges.append(upper_range)
+
     return ranges
 
 

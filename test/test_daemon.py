@@ -1474,58 +1474,6 @@ def make_total_file_descriptor_range_patch(testcase, fake_maxfd):
     return attr_patcher
 
 
-def make_total_file_descriptor_set_patch(testcase, fake_maxfd):
-    """ Make a `_total_file_descriptor_set` patch for the `testcase`.
-
-        :param testcase: The `unittest.TestCase` instance to patch.
-        :param fake_maxfd: The fake maximum file descriptor value.
-        :return: The `unittest.mock.patch` object.
-        """
-    attr_patcher = unittest.mock.patch.object(
-            daemon.daemon, "_total_file_descriptor_set",
-            new=set(range(0, fake_maxfd)))
-    return attr_patcher
-
-
-class _get_candidate_file_descriptors_TestCase(scaffold.TestCaseWithScenarios):
-    """ Test cases for function `_get_candidate_file_descriptors`. """
-
-    scenarios = [
-            ('exclude-three', {
-                'fake_maxfd': 10,
-                'test_kwargs': {
-                    'exclude': {3, 5, 8},
-                    },
-                'expected_result': {0, 1, 2, 4, 6, 7, 9},
-                }),
-            ('exclude-one', {
-                'fake_maxfd': 5,
-                'test_kwargs': {
-                    'exclude': {4},
-                    },
-                'expected_result': {0, 1, 2, 3},
-                }),
-            ('exclude-none', {
-                'fake_maxfd': 5,
-                'test_kwargs': {
-                    'exclude': set(),
-                },
-                'expected_result': {0, 1, 2, 3, 4},
-                }),
-            ]
-
-    def test_returns_expected_file_descriptors(self):
-        """ Should return the expected set of file descriptors. """
-        with contextlib.ExitStack() as patch_stack:
-            patch_stack.enter_context(
-                make_total_file_descriptor_range_patch(self, self.fake_maxfd))
-            patch_stack.enter_context(
-                make_total_file_descriptor_set_patch(self, self.fake_maxfd))
-            result = daemon.daemon._get_candidate_file_descriptors(
-                    **self.test_kwargs)
-        self.assertEqual(result, self.expected_result)
-
-
 class _get_candidate_file_descriptor_ranges_TestCase(
         scaffold.TestCaseWithScenarios):
     """ Test cases for function `_get_candidate_file_descriptor_ranges`. """
@@ -1613,6 +1561,16 @@ class _get_candidate_file_descriptor_ranges_TestCase(
                     (0, 5),
                     ],
                 }),
+            ('exclude-large-maxfd', {
+                'fake_maxfd': 0x3FFFFFF0,
+                'test_kwargs': {
+                    'exclude': {4},
+                    },
+                'expected_result': [
+                    (0, 4),
+                    (5, 0x3FFFFFF0),
+                    ],
+                }),
             ]
 
     def test_returns_expected_file_descriptors(self):
@@ -1620,8 +1578,6 @@ class _get_candidate_file_descriptor_ranges_TestCase(
         with contextlib.ExitStack() as patch_stack:
             patch_stack.enter_context(
                 make_total_file_descriptor_range_patch(self, self.fake_maxfd))
-            patch_stack.enter_context(
-                make_total_file_descriptor_set_patch(self, self.fake_maxfd))
             result = daemon.daemon._get_candidate_file_descriptor_ranges(
                     **self.test_kwargs)
         self.assertEqual(result, self.expected_result)
@@ -1725,11 +1681,6 @@ class close_all_open_files_TestCase(scaffold.TestCase):
                     self, fake_maxfd=self.fake_maxfd))
         total_file_descriptor_range_patch.start()
         self.addCleanup(total_file_descriptor_range_patch.stop)
-        total_file_descriptor_set_patch = (
-                make_total_file_descriptor_set_patch(
-                    self, fake_maxfd=self.fake_maxfd))
-        total_file_descriptor_set_patch.start()
-        self.addCleanup(total_file_descriptor_set_patch.stop)
 
         self.patch_os_closerange()
 
