@@ -91,15 +91,6 @@ setup_kwargs = dict(
         maintainer=maintainer_name,
         maintainer_email=maintainer_email,
         license=metadata.license,
-        classifiers=[
-            # Reference: <URL:https://pypi.org/classifiers/>
-            "Development Status :: 5 - Production/Stable",
-            "License :: OSI Approved :: Apache Software License",
-            "Operating System :: POSIX",
-            "Programming Language :: Python :: 3",
-            "Intended Audience :: Developers",
-            "Topic :: Software Development :: Libraries :: Python Modules",
-            ],
         url=metadata.url,
         project_urls={
             'Change Log':

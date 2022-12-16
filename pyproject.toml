@@ -13,6 +13,17 @@ name = "python-daemon"
 # Keywords to categorise this project.
 keywords = ["daemon", "fork", "unix"]
 
+# Trove classifiers for this project.
+# Reference: <URL:https://pypi.org/classifiers/>
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: POSIX",
+    "Programming Language :: Python :: 3",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    ]
+
 # Names of fields that must be dynamically computed by the build system.
 dynamic = [
     "description",
@@ -21,7 +32,6 @@ dynamic = [
     "authors",
     "maintainers",
     "license",
-    "classifiers",
     "urls",
     "requires-python",
     "dependencies",
