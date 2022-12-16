@@ -91,7 +91,6 @@ setup_kwargs = dict(
         maintainer=maintainer_name,
         maintainer_email=maintainer_email,
         license=metadata.license,
-        keywords="daemon fork unix".split(),
         classifiers=[
             # Reference: <URL:https://pypi.org/classifiers/>
             "Development Status :: 5 - Production/Stable",
