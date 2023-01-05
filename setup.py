@@ -37,39 +37,8 @@ description_fields = util.metadata.description_fields_from_docstring(
     util.metadata.docstring_from_object(main_module))
 
 
-test_requirements = [
-        "testtools",
-        "testscenarios >=0.4",
-        "coverage",
-        "docutils",
-        "changelog-chug",
-        ]
-
-build_requirements = [
-        "wheel",
-        "build",
-        "sphinx",
-        ] + test_requirements
-
-dist_requirements = [
-        "twine",
-        ] + build_requirements
-
-devel_requirements = [
-        "isort",
-        ] + dist_requirements
-
-
 setup_kwargs = dict(
         version=latest_changelog_entry.version,
-
-        # Setuptools metadata.
-        extras_require={
-            'test': test_requirements,
-            'build': build_requirements,
-            'dist': dist_requirements,
-            'devel': devel_requirements,
-            },
 
         # PyPI metadata.
         description=description_fields.synopsis,

@@ -48,7 +48,70 @@ dynamic = [
     "authors",
     "maintainers",
     "license",
-    "optional-dependencies",
+    ]
+
+[project.optional-dependencies]
+
+build = [
+
+    # Reference implementation of Python wheel packaging standard (PEP 427).
+    # Documentation: <URL:https://wheel.readthedocs.io/>.
+    "wheel",
+
+    # A simple, correct (defined by PEP 517) Python build frontend.
+    # Documentation: <URL:https://build.pypa.io/>.
+    "build",
+
+    # Python documentation generator.
+    # Documentation: <URL:https://www.sphinx-doc.org/>.
+    "sphinx",
+
+    # Python Documentation Utilities.
+    # Documentation: <URL:https://docutils.sourceforge.io/docs/>.
+    "docutils",
+
+    # Parser library for project Change Log documents.
+    # Documentation: <URL:https://packaging.pypa.io/>.
+    "changelog-chug",
+
+    ]
+
+test = [
+
+    "python-daemon[build]",
+
+    # Extensions to the Python ‘unittest’ framework.
+    # Documentation: <URL:https://testtools.readthedocs.org/>.
+    "testtools",
+
+    # Data-driven test scenarios for ‘unittest’.
+    # Documentation: <URL:https://pypi.org/project/testscenarios/>.
+    "testscenarios >= 0.4",
+
+    # Code coverage measurement.
+    # Documentation: <URL:https://coverage.readthedocs.io/>.
+    "coverage",
+
+    ]
+
+dist = [
+
+    "python-daemon[build]",
+
+    # Collection of utilities for publishing packages on PyPI.
+    # Documentation: <URL:https://twine.readthedocs.io/>.
+    "twine",
+
+    ]
+
+devel = [
+
+    "python-daemon[test,dist]",
+
+    # Python ‘import’ statement sorter.
+    # Documentation: <URL:https://pycqa.github.io/isort/>.
+    "isort ~= 5.13",
+
     ]
 
 [project.urls]
