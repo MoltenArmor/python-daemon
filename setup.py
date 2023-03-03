@@ -65,7 +65,7 @@ setup_kwargs = dict(
             "packaging",
             "lockfile >=0.10",
             ],
-        python_requires=">=3",
+        python_requires=">=3.4",
         extras_require={
             'test': test_requirements,
             'devel': devel_requirements,

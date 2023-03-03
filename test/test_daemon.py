@@ -556,9 +556,6 @@ class DaemonContext_open_TestCase(DaemonContext_BaseTestCase):
                 expected_calls, any_order=True)
 
     @unittest.skipIf(
-            sys.version_info < (3, 4),
-            "File handle inheritable attribute only in Python 3.4 or later")
-    @unittest.skipIf(
             sys.platform != 'windows',
             "File handles implemented only on MS Windows")
     @unittest.mock.patch.object(os, "set_inheritable")
