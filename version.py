@@ -31,12 +31,12 @@ import re
 import sys
 import textwrap
 
+import packaging.version
 import setuptools
 import setuptools.command.build
 import setuptools.command.build_py
 import setuptools.command.egg_info
 import setuptools.dist
-import setuptools.extern.packaging.version
 
 
 def ensure_class_bases_begin_with(namespace, class_name, base_class):
@@ -186,7 +186,7 @@ class ChangeLogEntry:
             # A valid non-version value.
             return None
 
-        valid_version = setuptools.extern.packaging.version.Version(value)
+        valid_version = packaging.version.Version(value)
 
     @classmethod
     def validate_maintainer(cls, value):

@@ -20,10 +20,10 @@ import unittest.mock
 import docutils
 import docutils.nodes
 import docutils.writers
+from packaging.version import InvalidVersion
 import setuptools
 import setuptools.command
 import setuptools.dist
-from setuptools.extern.packaging.version import InvalidVersion
 import testscenarios
 import testtools
 
