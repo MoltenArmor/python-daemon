@@ -64,7 +64,6 @@ devel_requirements = [
 
 
 setup_kwargs = dict(
-        name=metadata.distribution_name,
         version=latest_changelog_entry.version,
         packages=find_packages(exclude=["test", "util"]),
 

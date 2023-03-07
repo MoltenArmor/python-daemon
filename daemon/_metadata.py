@@ -8,8 +8,6 @@
 """ Package metadata for the ‘python-daemon’ distribution. """
 
 
-distribution_name = "python-daemon"
-
 author_name = "Ben Finney"
 author_email = "ben+python@benfinney.id.au"
 author = "{name} <{email}>".format(name=author_name, email=author_email)
