@@ -60,9 +60,12 @@ setup_kwargs = dict(
         zip_safe=False,
         setup_requires=[
             "docutils",
+            "packaging",
+            "setuptools",
             ],
         install_requires=[
             "setuptools >=62.4.0",
+            "packaging",
             "lockfile >=0.10",
             ],
         python_requires=">=3",

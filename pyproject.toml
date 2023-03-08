@@ -10,7 +10,9 @@
 # Minimum requirements for the build system.
 requires = [
     "setuptools >=62.4.0",
-    "docutils"]
+    "packaging",
+    "docutils",
+    ]
 
 # Path to the Python object to perform the build.
 build-backend = "setuptools.build_meta"
