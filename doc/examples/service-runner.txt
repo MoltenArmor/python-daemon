@@ -33,7 +33,7 @@ example: a `ServiceRunner` class.
 
     from daemon import pidfile
     from daemon.daemon import DaemonContext
-    import lockfile
+    from filelock import FileLock
 
 
     class ServiceRunnerError(Exception):
@@ -93,7 +93,7 @@ example: a `ServiceRunner` class.
 
             self.pidfile = None
             if app.pidfile_path is not None:
-                self.pidfile = make_pidlockfile(
+                self.pidfile = Filelock(
                         app.pidfile_path, app.pidfile_timeout)
             self.daemon_context.pidfile = self.pidfile
 

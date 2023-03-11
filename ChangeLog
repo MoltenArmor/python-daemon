@@ -23,6 +23,12 @@ Bugs Fixed:
 
   Closes: Pagure #73. Thanks to Michał Górny for the report.
 
+* Changed deprecated lockfile dependency with filelock.
+
+  The package lockfile used is no longer maintained. Filelock has been chosen
+  over pid due to it's more frequent updates.
+
+  Closes: Pagure #42
 
 Version 3.0.1
 =============

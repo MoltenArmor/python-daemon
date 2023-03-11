@@ -66,7 +66,7 @@ setup_kwargs = dict(
         install_requires=[
             "setuptools >=62.4.0",
             "packaging",
-            "lockfile >=0.10",
+            "filelock >=3.9.0",
             ],
         python_requires=">=3",
         extras_require={

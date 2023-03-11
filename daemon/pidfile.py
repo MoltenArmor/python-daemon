@@ -6,11 +6,15 @@
 # information, grant of license, and disclaimer of warranty.
 
 """ Lockfile behaviour implemented via Unix PID files. """
+from __future__ import annotations
 
-from lockfile.pidlockfile import PIDLockFile
+from threading import Lock
+
+from filelock import FileLock
+
 
 
-class TimeoutPIDLockFile(PIDLockFile, object):
+class TimeoutPIDLockFile(FileLock):
     """ Lockfile with default timeout, implemented as a Unix PID file.
 
         This uses the ``PIDLockFile`` implementation, with the
@@ -30,6 +34,8 @@ class TimeoutPIDLockFile(PIDLockFile, object):
             :return: ``None``.
             """
         self.acquire_timeout = acquire_timeout
+        self._thread_lock: Lock = Lock()
+        self._lock_file_fd: int | None = None
         super().__init__(path, *args, **kwargs)
 
     def acquire(self, timeout=None, *args, **kwargs):
