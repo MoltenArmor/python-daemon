@@ -405,36 +405,36 @@ class DaemonContext_open_TestCase(DaemonContext_BaseTestCase):
                 self.mock_pidlockfile, 'pidlockfile')
         expected_calls = [
                 unittest.mock.call.change_root_directory(
-                        unittest.mock.ANY),
+                    unittest.mock.ANY),
                 unittest.mock.call.prevent_core_dump(),
                 unittest.mock.call.change_file_creation_mask(
-                        unittest.mock.ANY),
+                    unittest.mock.ANY),
                 unittest.mock.call.change_working_directory(
-                        unittest.mock.ANY),
+                    unittest.mock.ANY),
                 unittest.mock.call.change_process_owner(
-                        unittest.mock.ANY,
-                        unittest.mock.ANY,
-                        unittest.mock.ANY),
+                    unittest.mock.ANY,
+                    unittest.mock.ANY,
+                    unittest.mock.ANY),
                 unittest.mock.call.detach_process_context(),
                 getattr(
                     unittest.mock.call.DaemonContext,
                     '_make_signal_handler_map')(),
                 unittest.mock.call.set_signal_handlers(
-                        unittest.mock.ANY),
+                    unittest.mock.ANY),
                 getattr(
                     unittest.mock.call.DaemonContext,
                     '_get_exclude_file_descriptors')(),
                 unittest.mock.call.close_all_open_files(
-                        exclude=unittest.mock.ANY),
+                    exclude=unittest.mock.ANY),
                 unittest.mock.call.redirect_stream(
-                        unittest.mock.ANY, unittest.mock.ANY),
+                    unittest.mock.ANY, unittest.mock.ANY),
                 unittest.mock.call.redirect_stream(
-                        unittest.mock.ANY, unittest.mock.ANY),
+                    unittest.mock.ANY, unittest.mock.ANY),
                 unittest.mock.call.redirect_stream(
-                        unittest.mock.ANY, unittest.mock.ANY),
+                    unittest.mock.ANY, unittest.mock.ANY),
                 unittest.mock.call.pidlockfile.__enter__(),
                 unittest.mock.call.register_atexit_function(
-                        unittest.mock.ANY),
+                    unittest.mock.ANY),
                 ]
         instance.open()
         self.mock_module_daemon.assert_has_calls(expected_calls)
@@ -1077,7 +1077,7 @@ class change_process_owner_TestCase(scaffold.TestCase):
         daemon.daemon.change_process_owner(**args)
         mock_os_module.assert_has_calls([
                 unittest.mock.call.initgroups(
-                        unittest.mock.ANY, unittest.mock.ANY),
+                    unittest.mock.ANY, unittest.mock.ANY),
                 unittest.mock.call.setuid(unittest.mock.ANY),
                 ])
 
