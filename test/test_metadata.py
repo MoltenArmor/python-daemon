@@ -8,7 +8,6 @@
 """ Unit test for ‘_metadata’ private module. """
 
 import re
-import urllib.parse as urlparse
 
 import testtools.helpers
 import testtools.matchers
@@ -54,7 +53,6 @@ class metadata_value_TestCase(scaffold.TestCaseWithScenarios):
     expected_str_attributes = {
             'author',
             'license',
-            'url',
             }
 
     scenarios = [
@@ -95,14 +93,6 @@ class metadata_content_TestCase(scaffold.TestCase):
         self.assertThat(
                 metadata.author,
                 testtools.matchers.MatchesRegex(regex_pattern, regex_flags))
-
-    def test_url_parses_correctly(self):
-        """ Homepage URL should parse correctly. """
-        result = urlparse.urlparse(metadata.url)
-        self.assertIsInstance(
-                result, urlparse.ParseResult,
-                "URL value {url!r} did not parse correctly".format(
-                    url=metadata.url))
 
 
 # Copyright © 2008–2024 Ben Finney <ben+python@benfinney.id.au>

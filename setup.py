@@ -85,7 +85,6 @@ setup_kwargs = dict(
         maintainer=maintainer_name,
         maintainer_email=maintainer_email,
         license=metadata.license,
-        url=metadata.url,
         project_urls={
             'Change Log':
                 "https://pagure.io/python-daemon/blob/main/f/ChangeLog",

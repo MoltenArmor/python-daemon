@@ -40,6 +40,10 @@ dynamic = [
     "optional-dependencies",
     ]
 
+[project.urls]
+"Home Page" = "https://pagure.io/python-daemon/"
+
+
 [build-system]
 
 # Minimum requirements for the build system.
