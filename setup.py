@@ -85,12 +85,6 @@ setup_kwargs = dict(
         maintainer=maintainer_name,
         maintainer_email=maintainer_email,
         license=metadata.license,
-        project_urls={
-            'Change Log':
-                "https://pagure.io/python-daemon/blob/main/f/ChangeLog",
-            'Source': "https://pagure.io/python-daemon/",
-            'Issue Tracker': "https://pagure.io/python-daemon/issues",
-            },
         )
 
 # Docutils is only required for building, but Setuptools can't distinguish

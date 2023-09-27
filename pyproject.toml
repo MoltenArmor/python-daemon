@@ -35,13 +35,15 @@ dynamic = [
     "authors",
     "maintainers",
     "license",
-    "urls",
     "dependencies",
     "optional-dependencies",
     ]
 
 [project.urls]
 "Home Page" = "https://pagure.io/python-daemon/"
+"Change Log" = "https://pagure.io/python-daemon/blob/main/f/ChangeLog"
+"Source" = "https://pagure.io/python-daemon/"
+"Issue Tracker" = "https://pagure.io/python-daemon/issues"
 
 
 [build-system]
