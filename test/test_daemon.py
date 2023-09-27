@@ -2086,7 +2086,7 @@ class is_detach_process_context_required_TestCase(scaffold.TestCase):
         result = daemon.daemon.is_detach_process_context_required()
         self.assertIs(result, expected_result)
 
-    def test_returns_true_if_started_by_superserver(
+    def test_returns_false_if_started_by_superserver(
             self,
             mock_func_is_process_started_by_init,
             mock_func_is_process_started_by_superserver):
