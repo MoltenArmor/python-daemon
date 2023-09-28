@@ -64,10 +64,6 @@ setup_kwargs = dict(
         version=latest_changelog_entry.version,
 
         # Setuptools metadata.
-        install_requires=[
-            "setuptools >=62.4.0",
-            "lockfile >=0.10",
-            ],
         extras_require={
             'test': test_requirements,
             'build': build_requirements,
@@ -85,11 +81,6 @@ setup_kwargs = dict(
         maintainer_email=maintainer_email,
         license=metadata.license,
         )
-
-# Docutils is only required for building, but Setuptools can't distinguish
-# dependencies properly.
-# See <URL:https://github.com/pypa/setuptools/issues/457>.
-setup_kwargs['install_requires'].append("docutils")
 
 
 if __name__ == '__main__':  # pragma: nocover
