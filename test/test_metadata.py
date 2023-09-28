@@ -52,7 +52,6 @@ class metadata_value_TestCase(scaffold.TestCaseWithScenarios):
 
     expected_str_attributes = {
             'author',
-            'license',
             }
 
     scenarios = [

@@ -40,6 +40,9 @@ dependencies = [
 
     ]
 
+# The license granted to recipients of this project.
+license = { file = "COPYING" }
+
 # Names of fields that must be dynamically computed by the build system.
 dynamic = [
     "description",
@@ -47,7 +50,6 @@ dynamic = [
     "version",
     "authors",
     "maintainers",
-    "license",
     ]
 
 [project.optional-dependencies]

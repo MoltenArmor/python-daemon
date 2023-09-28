@@ -48,7 +48,6 @@ setup_kwargs = dict(
         author_email=metadata.author_email,
         maintainer=maintainer_name,
         maintainer_email=maintainer_email,
-        license=metadata.license,
         )
 
 

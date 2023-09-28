@@ -12,8 +12,6 @@ author_name = "Ben Finney"
 author_email = "ben+python@benfinney.id.au"
 author = "{name} <{email}>".format(name=author_name, email=author_email)
 
-license = "Apache-2, GPL-3+"
-
 
 # Copyright © 2008–2024 Ben Finney <ben+python@benfinney.id.au>
 #
