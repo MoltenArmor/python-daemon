@@ -8,11 +8,6 @@
 """ Package metadata for the ‘python-daemon’ distribution. """
 
 
-author_name = "Ben Finney"
-author_email = "ben+python@benfinney.id.au"
-author = "{name} <{email}>".format(name=author_name, email=author_email)
-
-
 # Copyright © 2008–2024 Ben Finney <ben+python@benfinney.id.au>
 #
 # This is free software: you may copy, modify, and/or distribute this work

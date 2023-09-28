@@ -23,9 +23,7 @@ import util.metadata  # noqa: E402
 import util.packaging  # noqa: E402
 
 
-main_module = util.packaging.main_module_by_name(
-        'daemon', fromlist=['_metadata'])
-metadata = main_module._metadata
+main_module = util.packaging.main_module_by_name('daemon')
 
 changelog_infile_path = package_root_dir.joinpath("ChangeLog")
 latest_changelog_entry = util.metadata.get_latest_changelog_entry(
@@ -44,8 +42,6 @@ setup_kwargs = dict(
         description=description_fields.synopsis,
         long_description=description_fields.long_description,
         long_description_content_type=description_fields.content_type,
-        author=metadata.author_name,
-        author_email=metadata.author_email,
         maintainer=maintainer_name,
         maintainer_email=maintainer_email,
         )

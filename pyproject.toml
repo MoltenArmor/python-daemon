@@ -43,12 +43,16 @@ dependencies = [
 # The license granted to recipients of this project.
 license = { file = "COPYING" }
 
+# The persons or entities considered the authors of this project.
+authors = [
+    { name = "Ben Finney", email = "ben+python@benfinney.id.au" },
+    ]
+
 # Names of fields that must be dynamically computed by the build system.
 dynamic = [
     "description",
     "readme",
     "version",
-    "authors",
     "maintainers",
     ]
 
