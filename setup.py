@@ -64,7 +64,6 @@ setup_kwargs = dict(
         version=latest_changelog_entry.version,
 
         # Setuptools metadata.
-        setup_requires=build_requirements,
         install_requires=[
             "setuptools >=62.4.0",
             "lockfile >=0.10",

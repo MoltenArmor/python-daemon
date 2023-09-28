@@ -50,10 +50,23 @@ dynamic = [
 
 # Minimum requirements for the build system.
 requires = [
+
+    # Reference implementation of Python wheel packaging standard (PEP 427).
+    # Documentation: <URL:https://wheel.readthedocs.io/>.
     "wheel",
-    "setuptools >=62.4.0",
+
+    # Framework for working with Python packages.
+    # Documentation: <URL:https://setuptools.pypa.io/>.
+    "setuptools >= 62.4.0",
+
+    # Python Documentation Utilities.
+    # Documentation: <URL:https://docutils.sourceforge.io/docs/>.
     "docutils",
+
+    # Parser library for project Change Log documents.
+    # Documentation: <URL:https://packaging.pypa.io/>.
     "changelog-chug",
+
     ]
 
 # Path to the Python object to perform the build.
