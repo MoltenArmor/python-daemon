@@ -31,9 +31,9 @@ import version
 
 
 version.ensure_class_bases_begin_with(
-        version.__dict__, str('VersionInfoWriter'), docutils.writers.Writer)
+        version.__dict__, 'VersionInfoWriter', docutils.writers.Writer)
 version.ensure_class_bases_begin_with(
-        version.__dict__, str('VersionInfoTranslator'),
+        version.__dict__, 'VersionInfoTranslator',
         docutils.nodes.SparseNodeVisitor)
 
 

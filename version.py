@@ -433,9 +433,9 @@ def changelog_to_version_info_collection(infile):
     import docutils.writers
 
     ensure_class_bases_begin_with(
-            globals(), str('VersionInfoWriter'), docutils.writers.Writer)
+            globals(), 'VersionInfoWriter', docutils.writers.Writer)
     ensure_class_bases_begin_with(
-            globals(), str('VersionInfoTranslator'),
+            globals(), 'VersionInfoTranslator',
             docutils.nodes.SparseNodeVisitor)
 
     writer = VersionInfoWriter()

@@ -386,7 +386,7 @@ class TimeoutPIDLockFile_TestCase(scaffold.TestCase):
     def test_init_has_expected_signature(self):
         """ Should have expected signature for ‘__init__’. """
         def test_func(self, path, acquire_timeout=None, *args, **kwargs): pass
-        test_func.__name__ = str('__init__')
+        test_func.__name__ = '__init__'
         self.assertFunctionSignatureMatch(
                 test_func,
                 daemon.pidfile.TimeoutPIDLockFile.__init__)

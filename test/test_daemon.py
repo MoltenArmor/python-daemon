@@ -809,7 +809,7 @@ class DaemonContext_make_signal_handler_TestCase(DaemonContext_BaseTestCase):
     def test_returns_method_for_str_name(self):
         """ Should return DaemonContext method for name of type ‘str’. """
         instance = self.test_instance
-        target = str('terminate')
+        target = 'terminate'
         expected_result = instance.terminate
         result = instance._make_signal_handler(target)
         self.assertEqual(expected_result, result)
@@ -2175,7 +2175,7 @@ class make_default_signal_map_TestCase(scaffold.TestCase):
         super().setUp()
 
         # Use whatever default string type this Python version needs.
-        signal_module_name = str('signal')
+        signal_module_name = 'signal'
         self.fake_signal_module = ModuleType(signal_module_name)
 
         fake_signal_names = [
