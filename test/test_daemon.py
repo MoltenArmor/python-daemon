@@ -2247,7 +2247,7 @@ class set_signal_handlers_TestCase(scaffold.TestCase):
                 unittest.mock.call(signal_number, handler)
                 for (signal_number, handler) in signal_handler_map.items()]
         daemon.daemon.set_signal_handlers(signal_handler_map)
-        self.assertEquals(expected_calls, mock_func_signal_signal.mock_calls)
+        self.assertEqual(expected_calls, mock_func_signal_signal.mock_calls)
 
 
 @unittest.mock.patch.object(daemon.daemon.atexit, "register")
