@@ -715,9 +715,9 @@ class DaemonContext_get_exclude_file_descriptors_TestCase(
         for (fileno, item) in self.test_files.items():
             if hasattr(item, '_fileno'):
                 item._fileno = fileno
-        self.test_file_descriptors = set(
+        self.test_file_descriptors = {
                 fd for (fd, item) in self.test_files.items()
-                if item is not None)
+                if item is not None}
         self.test_file_descriptors.update(
                 self.stream_files_by_name[name].fileno()
                 for name in ['stdin', 'stdout', 'stderr']
@@ -735,9 +735,9 @@ class DaemonContext_get_exclude_file_descriptors_TestCase(
         """ Should return only stream redirects if no files_preserve. """
         instance = self.test_instance
         instance.files_preserve = None
-        expected_result = set(
+        expected_result = {
                 stream.fileno()
-                for stream in self.stream_files_by_name.values())
+                for stream in self.stream_files_by_name.values()}
         result = instance._get_exclude_file_descriptors()
         self.assertEqual(expected_result, result)
 
@@ -1273,16 +1273,16 @@ class get_stream_file_descriptors_TestCase(scaffold.TestCase):
     def test_returns_standard_stream_file_descriptors(self):
         """ Should return the file descriptors of all standard streams. """
         result = daemon.daemon.get_stream_file_descriptors()
-        expected_fds = set(
-            stream.fileno() for stream in {sys.stdin, sys.stdout, sys.stderr})
+        expected_fds = {
+            stream.fileno() for stream in {sys.stdin, sys.stdout, sys.stderr}}
         self.assertEqual(result, expected_fds)
 
     def test_returns_specified_stream_file_descriptors(self):
         """ Should return the file descriptors of specified streams. """
         test_kwargs = dict(**self.fake_streams)
         result = daemon.daemon.get_stream_file_descriptors(**test_kwargs)
-        expected_fds = set(
-            stream.fileno() for stream in self.fake_streams.values())
+        expected_fds = {
+            stream.fileno() for stream in self.fake_streams.values()}
         self.assertEqual(result, expected_fds)
 
     def test_omits_stream_if_stream_has_no_fileno(self):
@@ -1292,11 +1292,11 @@ class get_stream_file_descriptors_TestCase(scaffold.TestCase):
             self.fake_streams['stdin'], 'fileno', return_value=None)
         with fake_stdin_fileno_method:
             result = daemon.daemon.get_stream_file_descriptors(**test_kwargs)
-        expected_fds = set(
+        expected_fds = {
             stream.fileno() for stream in [
                 self.fake_streams['stdout'],
                 self.fake_streams['stderr'],
-            ])
+            ]}
         self.assertEqual(result, expected_fds)
 
 
@@ -1693,7 +1693,7 @@ class close_all_open_files_TestCase(scaffold.TestCase):
 
     def test_closes_each_open_file_descriptor_when_exclude(self):
         """ Should close each open file, when `exclude` specified. """
-        test_exclude = set([3, 7])
+        test_exclude = {3, 7}
         test_kwargs = dict(
                 exclude=test_exclude,
                 )

@@ -509,11 +509,11 @@ def get_stream_file_descriptors(
         Include in the result only those streams that actually have a
         file descriptor (as returned by the `fileno` method).
         """
-    file_descriptors = set(
-            fd for fd in set(
+    file_descriptors = {
+            fd for fd in {
                 _get_file_descriptor(stream)
-                for stream in {stdin, stdout, stderr})
-            if fd is not None)
+                for stream in {stdin, stdout, stderr}}
+            if fd is not None}
     return file_descriptors
 
 

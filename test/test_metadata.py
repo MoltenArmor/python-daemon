@@ -56,13 +56,13 @@ class AttributeNotFoundMismatch(testtools.matchers.Mismatch):
 class metadata_value_TestCase(scaffold.TestCaseWithScenarios):
     """ Test cases for metadata module values. """
 
-    expected_str_attributes = set([
+    expected_str_attributes = {
             'version_installed',
             'author',
             'copyright',
             'license',
             'url',
-            ])
+            }
 
     scenarios = [
             (name, {'attribute_name': name})
