@@ -1,7 +1,7 @@
 Credits for contributors to ‘python-daemon’
 ###########################################
 
-:Updated: 2022-02-18
+:Updated: 2023-10-12
 
 The ‘python-daemon’ library is the work of many contributors.
 
@@ -55,8 +55,8 @@ People who have also contributed substantial improvements:
 ..
     Local variables:
     coding: utf-8
-    mode: rst
     mode: text
+    mode: rst
     time-stamp-format: "%:y-%02m-%02d"
     time-stamp-start: "^:Updated:[	 ]+"
     time-stamp-end: "$"

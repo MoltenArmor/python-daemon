@@ -13,7 +13,7 @@ wheel
 
 # Local variables:
 # coding: utf-8
-# mode: pip-requirements
 # mode: conf
+# mode: pip-requirements
 # End:
 # vim: fileencoding=utf-8 filetype=conf :

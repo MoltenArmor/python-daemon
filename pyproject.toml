@@ -20,7 +20,7 @@ build-backend = "setuptools.build_meta"
 
 # Local-variables:
 # coding: utf-8
-# mode: toml
 # mode: conf
+# mode: toml
 # End:
 # vim: fileencoding=utf-8 filetype=toml :

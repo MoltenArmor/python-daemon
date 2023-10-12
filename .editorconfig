@@ -40,7 +40,7 @@ indent_style = tab
 
 # Local variables:
 # coding: utf-8
-# mode: conf-editorconfig
 # mode: conf
+# mode: conf-editorconfig
 # End:
 # vim: fileencoding=utf-8 filetype=dosini :

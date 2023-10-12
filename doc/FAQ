@@ -146,8 +146,8 @@ from closure::
 ..
     Local variables:
     coding: utf-8
-    mode: rst
     mode: text
+    mode: rst
     time-stamp-format: "%:y-%02m-%02d"
     time-stamp-start: "^:Updated:[         ]+"
     time-stamp-end: "$"

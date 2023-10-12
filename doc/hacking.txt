@@ -177,8 +177,8 @@ Additional style guidelines
       
       # Local variables:
       # coding: utf-8
-      # mode: rst
       # mode: text
+      # mode: rst
       # End:
       # vim: fileencoding=utf-8 filetype=rst :
 
@@ -251,8 +251,8 @@ project.
 ..
     Local variables:
     coding: utf-8
-    mode: rst
     mode: text
+    mode: rst
     time-stamp-format: "%:y-%02m-%02d"
     time-stamp-start: "^:Updated:[	 ]+"
     time-stamp-end: "$"
