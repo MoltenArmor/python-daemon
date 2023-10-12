@@ -52,6 +52,30 @@ dynamic = [
 
 [project.optional-dependencies]
 
+static-analysis = [
+
+    # Pip version inspector that reports PyPI available updates.
+    # Homepage: <URL:https://github.com/bartTC/pip-check/>.
+    "pip-check",
+
+    # Static code checker for Python style recommendations.
+    # Documentation: <URL:https://pycodestyle.pycqa.org/>.
+    "pycodestyle ~= 2.12",
+
+    # Python docstring style checker.
+    # Documentation: <URL:https://www.pydocstyle.org/>.
+    "pydocstyle ~= 6.3",
+
+    # Tool to upgrade Python syntax for newer versions.
+    # Documentation: <URL:https://github.com/asottile/pyupgrade>.
+    "pyupgrade ~= 3.17",
+
+    # Python ‘import’ statement sorter.
+    # Documentation: <URL:https://pycqa.github.io/isort/>.
+    "isort ~= 5.13",
+
+    ]
+
 build = [
 
     # Reference implementation of Python wheel packaging standard (PEP 427).
@@ -78,7 +102,7 @@ build = [
 
 test = [
 
-    "python-daemon[build]",
+    "python-daemon[static-analysis,build]",
 
     # Extensions to the Python ‘unittest’ framework.
     # Documentation: <URL:https://testtools.readthedocs.org/>.
@@ -107,10 +131,6 @@ dist = [
 devel = [
 
     "python-daemon[test,dist]",
-
-    # Python ‘import’ statement sorter.
-    # Documentation: <URL:https://pycqa.github.io/isort/>.
-    "isort ~= 5.13",
 
     ]
 
