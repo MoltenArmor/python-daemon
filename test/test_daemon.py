@@ -701,9 +701,7 @@ class DaemonContext_get_exclude_file_descriptors_TestCase(
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(
-                DaemonContext_get_exclude_file_descriptors_TestCase,
-                self).setUp()
+        super().setUp()
 
         self.test_files = {
                 2: FakeFileDescriptorStringIO(),

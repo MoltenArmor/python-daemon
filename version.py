@@ -580,7 +580,7 @@ class WriteVersionInfoCommand(setuptools.command.egg_info.egg_info):
 
     def initialize_options(self):
         """ Initialise command options to defaults. """
-        super(WriteVersionInfoCommand, self).initialize_options()
+        super().initialize_options()
         self.changelog_path = None
         self.outfile_path = None
 
@@ -590,7 +590,7 @@ class WriteVersionInfoCommand(setuptools.command.egg_info.egg_info):
                 'build',
                 ('force', 'force'))
 
-        super(WriteVersionInfoCommand, self).finalize_options()
+        super().finalize_options()
 
         if self.changelog_path is None:
             self.changelog_path = get_changelog_path(self.distribution)
@@ -621,7 +621,7 @@ class ChangelogAwareDistribution(setuptools.dist.Distribution):
     __metaclass__ = type
 
     def __init__(self, *args, **kwargs):
-        super(ChangelogAwareDistribution, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         if self.script_name is None:
             self.script_name = sys.argv[1]

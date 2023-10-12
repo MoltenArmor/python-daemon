@@ -157,9 +157,7 @@ class ensure_class_bases_begin_with_AlreadyHasBase_TestCase(
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(
-                ensure_class_bases_begin_with_AlreadyHasBase_TestCase,
-                self).setUp()
+        super().setUp()
 
         self.class_name = self.test_class.__name__
         self.test_module_namespace = {self.class_name: self.test_class}
@@ -1196,9 +1194,7 @@ class WriteVersionInfoCommand_initialize_options_TestCase(
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(
-                WriteVersionInfoCommand_initialize_options_TestCase, self
-                ).setUp()
+        super().setUp()
 
         patcher_func_egg_info_initialize_options = (
                 unittest.mock.patch.object(
