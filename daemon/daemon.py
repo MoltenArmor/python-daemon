@@ -480,9 +480,9 @@ class DaemonContext:
             context instance, suitable for passing to
             `set_signal_handlers`.
             """
-        signal_handler_map = dict(
-                (signal_number, self._make_signal_handler(target))
-                for (signal_number, target) in self.signal_map.items())
+        signal_handler_map = {
+                signal_number: self._make_signal_handler(target)
+                for (signal_number, target) in self.signal_map.items()}
         return signal_handler_map
 
 
@@ -994,10 +994,10 @@ def make_default_signal_map():
             'SIGTTOU': None,
             'SIGTERM': 'terminate',
             }
-    signal_map = dict(
-            (getattr(signal, name), target)
+    signal_map = {
+            getattr(signal, name): target
             for (name, target) in name_map.items()
-            if hasattr(signal, name))
+            if hasattr(signal, name)}
 
     return signal_map
 

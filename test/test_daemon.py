@@ -352,9 +352,9 @@ class DaemonContext_open_TestCase(DaemonContext_BaseTestCase):
         self.test_instance._is_open = False
 
         self.mock_module_daemon = unittest.mock.MagicMock()
-        daemon_func_patchers = dict(
-                (func_name, unittest.mock.patch.object(
-                    daemon.daemon, func_name))
+        daemon_func_patchers = {
+                func_name: unittest.mock.patch.object(
+                    daemon.daemon, func_name)
                 for func_name in [
                     "detach_process_context",
                     "change_working_directory",
@@ -366,7 +366,7 @@ class DaemonContext_open_TestCase(DaemonContext_BaseTestCase):
                     "redirect_stream",
                     "set_signal_handlers",
                     "register_atexit_function",
-                    ])
+                    ]}
         for (func_name, patcher) in daemon_func_patchers.items():
             mock_func = patcher.start()
             self.addCleanup(patcher.stop)
@@ -381,14 +381,14 @@ class DaemonContext_open_TestCase(DaemonContext_BaseTestCase):
                 '_get_exclude_file_descriptors': self.test_files_preserve_fds,
                 '_make_signal_handler_map': self.test_signal_handler_map,
                 }
-        daemoncontext_func_patchers = dict(
-                (func_name, unittest.mock.patch.object(
+        daemoncontext_func_patchers = {
+                func_name: unittest.mock.patch.object(
                     daemon.daemon.DaemonContext,
                     func_name,
-                    return_value=return_value))
+                    return_value=return_value)
                 for (func_name, return_value) in (
                     daemoncontext_method_return_values.items())
-                )
+                }
         for (func_name, patcher) in daemoncontext_func_patchers.items():
             mock_func = patcher.start()
             self.addCleanup(patcher.stop)
@@ -844,12 +844,12 @@ class DaemonContext_make_signal_handler_map_TestCase(
                 object(): object(),
                 }
 
-        self.test_signal_handlers = dict(
-                (key, object())
-                for key in self.test_instance.signal_map.values())
-        self.test_signal_handler_map = dict(
-                (key, self.test_signal_handlers[target])
-                for (key, target) in self.test_instance.signal_map.items())
+        self.test_signal_handlers = {
+                key: object()
+                for key in self.test_instance.signal_map.values()}
+        self.test_signal_handler_map = {
+                key: self.test_signal_handlers[target]
+                for (key, target) in self.test_instance.signal_map.items()}
 
         def fake_make_signal_handler(target):
             return self.test_signal_handlers[target]
@@ -2103,16 +2103,16 @@ def setup_streams_fixtures(testcase):
             stderr=tempfile.mktemp(),
             )
 
-    testcase.stream_files_by_name = dict(
-            (name, FakeFileDescriptorStringIO())
+    testcase.stream_files_by_name = {
+            name: FakeFileDescriptorStringIO()
             for name in ['stdin', 'stdout', 'stderr']
-            )
+            }
 
-    testcase.stream_files_by_path = dict(
-            (testcase.stream_file_paths[name],
-                testcase.stream_files_by_name[name])
+    testcase.stream_files_by_path = {
+            testcase.stream_file_paths[name]:
+                testcase.stream_files_by_name[name]
             for name in ['stdin', 'stdout', 'stderr']
-            )
+            }
 
 
 @unittest.mock.patch.object(os, "dup2")
@@ -2199,9 +2199,9 @@ class make_default_signal_map_TestCase(scaffold.TestCase):
                 'SIGTTOU': None,
                 'SIGTERM': 'terminate',
                 }
-        self.default_signal_map = dict(
-                (getattr(self.fake_signal_module, name), target)
-                for (name, target) in default_signal_map_by_name.items())
+        self.default_signal_map = {
+                getattr(self.fake_signal_module, name): target
+                for (name, target) in default_signal_map_by_name.items()}
 
     def test_returns_constructed_signal_map(self):
         """ Should return map per default. """

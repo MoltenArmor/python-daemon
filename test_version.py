@@ -60,9 +60,9 @@ def make_test_classes_for_ensure_class_bases_begin_with():
     class FooWithCustomMetaclass:
         __metaclass__ = quux_metaclass
 
-    result = dict(
-            (name, value) for (name, value) in locals().items()
-            if isinstance(value, type))
+    result = {
+            name: value for (name, value) in locals().items()
+            if isinstance(value, type)}
 
     return result
 

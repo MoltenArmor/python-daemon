@@ -202,9 +202,9 @@ def setup_pidfile_fixtures(testcase):
             result = testcase.scenario['pidfile'].fileno()
             return result
 
-        funcs = dict(
-                (name, obj) for (name, obj) in vars().items()
-                if callable(obj))
+        funcs = {
+                name: obj for (name, obj) in vars().items()
+                if callable(obj)}
 
         return funcs
 
@@ -298,12 +298,11 @@ def make_lockfile_method_fakes(scenario):
     def fake_func_break_lock():
         scenario['locking_pid'] = None
 
-    fake_methods = dict(
-            (
-                func_name.replace('fake_func_', ''),
-                unittest.mock.MagicMock(side_effect=fake_func))
+    fake_methods = {
+                func_name.replace('fake_func_', ''):
+                unittest.mock.MagicMock(side_effect=fake_func)
             for (func_name, fake_func) in vars().items()
-            if func_name.startswith('fake_func_'))
+            if func_name.startswith('fake_func_')}
 
     return fake_methods
 
@@ -320,11 +319,11 @@ def apply_lockfile_method_mocks(mock_lockfile, testcase, scenario):
         methods customised for `scenario`. The mock is does by a patch
         within the context of `testcase`.
         """
-    fake_methods = dict(
-            (func_name, fake_func)
+    fake_methods = {
+            func_name: fake_func
             for (func_name, fake_func) in (
                 make_lockfile_method_fakes(scenario).items())
-            if func_name not in ['read_pid'])
+            if func_name not in ['read_pid']}
 
     for (func_name, fake_func) in fake_methods.items():
         func_patcher = unittest.mock.patch.object(
