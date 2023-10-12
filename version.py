@@ -255,7 +255,7 @@ class InvalidFormatError(ValueError):
         return text
 
 
-class VersionInfoTranslator(object):
+class VersionInfoTranslator:
     """ Translator from document nodes to a version info stream. """
 
     # This class needs its base class to be a class from `docutils`.
@@ -548,7 +548,7 @@ def has_changelog(command):
     return result
 
 
-class BuildCommand(setuptools.command.build.build, object):
+class BuildCommand(setuptools.command.build.build):
     """ Custom ‘build’ command for this distribution. """
 
     sub_commands = (
@@ -557,7 +557,7 @@ class BuildCommand(setuptools.command.build.build, object):
             ])
 
 
-class EggInfoCommand(setuptools.command.egg_info.egg_info, object):
+class EggInfoCommand(setuptools.command.egg_info.egg_info):
     """ Custom ‘egg_info’ command for this distribution. """
 
     sub_commands = ([
@@ -568,7 +568,7 @@ class EggInfoCommand(setuptools.command.egg_info.egg_info, object):
 version_info_filename = "version_info.json"
 
 
-class WriteVersionInfoCommand(setuptools.command.egg_info.egg_info, object):
+class WriteVersionInfoCommand(setuptools.command.egg_info.egg_info):
     """ Setuptools command to serialise version info metadata. """
 
     user_options = ([
@@ -607,7 +607,7 @@ class WriteVersionInfoCommand(setuptools.command.egg_info.egg_info, object):
         self.write_file("version info", self.outfile_path, content)
 
 
-class ChangelogAwareDistribution(setuptools.dist.Distribution, object):
+class ChangelogAwareDistribution(setuptools.dist.Distribution):
     """ A distribution of Python code for installation.
 
         This class gets the following attributes instead from the

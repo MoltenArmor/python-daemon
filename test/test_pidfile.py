@@ -23,7 +23,7 @@ import daemon.pidfile
 from . import scaffold
 
 
-class FakeFileDescriptorStringIO(io.StringIO, object):
+class FakeFileDescriptorStringIO(io.StringIO):
     """ A StringIO class that fakes a file descriptor. """
 
     _fileno_generator = itertools.count()
