@@ -10,7 +10,7 @@
 from lockfile.pidlockfile import PIDLockFile
 
 
-class TimeoutPIDLockFile(PIDLockFile, object):
+class TimeoutPIDLockFile(PIDLockFile):
     """ Lockfile with default timeout, implemented as a Unix PID file.
 
         This uses the ``PIDLockFile`` implementation, with the

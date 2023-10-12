@@ -31,9 +31,9 @@ import version
 
 
 version.ensure_class_bases_begin_with(
-        version.__dict__, str('VersionInfoWriter'), docutils.writers.Writer)
+        version.__dict__, 'VersionInfoWriter', docutils.writers.Writer)
 version.ensure_class_bases_begin_with(
-        version.__dict__, str('VersionInfoTranslator'),
+        version.__dict__, 'VersionInfoTranslator',
         docutils.nodes.SparseNodeVisitor)
 
 
@@ -60,9 +60,9 @@ def make_test_classes_for_ensure_class_bases_begin_with():
     class FooWithCustomMetaclass:
         __metaclass__ = quux_metaclass
 
-    result = dict(
-            (name, value) for (name, value) in locals().items()
-            if isinstance(value, type))
+    result = {
+            name: value for (name, value) in locals().items()
+            if isinstance(value, type)}
 
     return result
 
@@ -157,9 +157,7 @@ class ensure_class_bases_begin_with_AlreadyHasBase_TestCase(
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(
-                ensure_class_bases_begin_with_AlreadyHasBase_TestCase,
-                self).setUp()
+        super().setUp()
 
         self.class_name = self.test_class.__name__
         self.test_module_namespace = {self.class_name: self.test_class}
@@ -1196,9 +1194,7 @@ class WriteVersionInfoCommand_initialize_options_TestCase(
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(
-                WriteVersionInfoCommand_initialize_options_TestCase, self
-                ).setUp()
+        super().setUp()
 
         patcher_func_egg_info_initialize_options = (
                 unittest.mock.patch.object(

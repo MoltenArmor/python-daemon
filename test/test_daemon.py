@@ -352,9 +352,9 @@ class DaemonContext_open_TestCase(DaemonContext_BaseTestCase):
         self.test_instance._is_open = False
 
         self.mock_module_daemon = unittest.mock.MagicMock()
-        daemon_func_patchers = dict(
-                (func_name, unittest.mock.patch.object(
-                    daemon.daemon, func_name))
+        daemon_func_patchers = {
+                func_name: unittest.mock.patch.object(
+                    daemon.daemon, func_name)
                 for func_name in [
                     "detach_process_context",
                     "change_working_directory",
@@ -366,7 +366,7 @@ class DaemonContext_open_TestCase(DaemonContext_BaseTestCase):
                     "redirect_stream",
                     "set_signal_handlers",
                     "register_atexit_function",
-                    ])
+                    ]}
         for (func_name, patcher) in daemon_func_patchers.items():
             mock_func = patcher.start()
             self.addCleanup(patcher.stop)
@@ -381,14 +381,14 @@ class DaemonContext_open_TestCase(DaemonContext_BaseTestCase):
                 '_get_exclude_file_descriptors': self.test_files_preserve_fds,
                 '_make_signal_handler_map': self.test_signal_handler_map,
                 }
-        daemoncontext_func_patchers = dict(
-                (func_name, unittest.mock.patch.object(
+        daemoncontext_func_patchers = {
+                func_name: unittest.mock.patch.object(
                     daemon.daemon.DaemonContext,
                     func_name,
-                    return_value=return_value))
+                    return_value=return_value)
                 for (func_name, return_value) in (
                     daemoncontext_method_return_values.items())
-                )
+                }
         for (func_name, patcher) in daemoncontext_func_patchers.items():
             mock_func = patcher.start()
             self.addCleanup(patcher.stop)
@@ -701,9 +701,7 @@ class DaemonContext_get_exclude_file_descriptors_TestCase(
 
     def setUp(self):
         """ Set up test fixtures. """
-        super(
-                DaemonContext_get_exclude_file_descriptors_TestCase,
-                self).setUp()
+        super().setUp()
 
         self.test_files = {
                 2: FakeFileDescriptorStringIO(),
@@ -717,9 +715,9 @@ class DaemonContext_get_exclude_file_descriptors_TestCase(
         for (fileno, item) in self.test_files.items():
             if hasattr(item, '_fileno'):
                 item._fileno = fileno
-        self.test_file_descriptors = set(
+        self.test_file_descriptors = {
                 fd for (fd, item) in self.test_files.items()
-                if item is not None)
+                if item is not None}
         self.test_file_descriptors.update(
                 self.stream_files_by_name[name].fileno()
                 for name in ['stdin', 'stdout', 'stderr']
@@ -737,9 +735,9 @@ class DaemonContext_get_exclude_file_descriptors_TestCase(
         """ Should return only stream redirects if no files_preserve. """
         instance = self.test_instance
         instance.files_preserve = None
-        expected_result = set(
+        expected_result = {
                 stream.fileno()
-                for stream in self.stream_files_by_name.values())
+                for stream in self.stream_files_by_name.values()}
         result = instance._get_exclude_file_descriptors()
         self.assertEqual(expected_result, result)
 
@@ -809,7 +807,7 @@ class DaemonContext_make_signal_handler_TestCase(DaemonContext_BaseTestCase):
     def test_returns_method_for_str_name(self):
         """ Should return DaemonContext method for name of type ‘str’. """
         instance = self.test_instance
-        target = str('terminate')
+        target = 'terminate'
         expected_result = instance.terminate
         result = instance._make_signal_handler(target)
         self.assertEqual(expected_result, result)
@@ -846,12 +844,12 @@ class DaemonContext_make_signal_handler_map_TestCase(
                 object(): object(),
                 }
 
-        self.test_signal_handlers = dict(
-                (key, object())
-                for key in self.test_instance.signal_map.values())
-        self.test_signal_handler_map = dict(
-                (key, self.test_signal_handlers[target])
-                for (key, target) in self.test_instance.signal_map.items())
+        self.test_signal_handlers = {
+                key: object()
+                for key in self.test_instance.signal_map.values()}
+        self.test_signal_handler_map = {
+                key: self.test_signal_handlers[target]
+                for (key, target) in self.test_instance.signal_map.items()}
 
         def fake_make_signal_handler(target):
             return self.test_signal_handlers[target]
@@ -1275,16 +1273,16 @@ class get_stream_file_descriptors_TestCase(scaffold.TestCase):
     def test_returns_standard_stream_file_descriptors(self):
         """ Should return the file descriptors of all standard streams. """
         result = daemon.daemon.get_stream_file_descriptors()
-        expected_fds = set(
-            stream.fileno() for stream in {sys.stdin, sys.stdout, sys.stderr})
+        expected_fds = {
+            stream.fileno() for stream in {sys.stdin, sys.stdout, sys.stderr}}
         self.assertEqual(result, expected_fds)
 
     def test_returns_specified_stream_file_descriptors(self):
         """ Should return the file descriptors of specified streams. """
         test_kwargs = dict(**self.fake_streams)
         result = daemon.daemon.get_stream_file_descriptors(**test_kwargs)
-        expected_fds = set(
-            stream.fileno() for stream in self.fake_streams.values())
+        expected_fds = {
+            stream.fileno() for stream in self.fake_streams.values()}
         self.assertEqual(result, expected_fds)
 
     def test_omits_stream_if_stream_has_no_fileno(self):
@@ -1294,11 +1292,11 @@ class get_stream_file_descriptors_TestCase(scaffold.TestCase):
             self.fake_streams['stdin'], 'fileno', return_value=None)
         with fake_stdin_fileno_method:
             result = daemon.daemon.get_stream_file_descriptors(**test_kwargs)
-        expected_fds = set(
+        expected_fds = {
             stream.fileno() for stream in [
                 self.fake_streams['stdout'],
                 self.fake_streams['stderr'],
-            ])
+            ]}
         self.assertEqual(result, expected_fds)
 
 
@@ -1695,7 +1693,7 @@ class close_all_open_files_TestCase(scaffold.TestCase):
 
     def test_closes_each_open_file_descriptor_when_exclude(self):
         """ Should close each open file, when `exclude` specified. """
-        test_exclude = set([3, 7])
+        test_exclude = {3, 7}
         test_kwargs = dict(
                 exclude=test_exclude,
                 )
@@ -2105,16 +2103,16 @@ def setup_streams_fixtures(testcase):
             stderr=tempfile.mktemp(),
             )
 
-    testcase.stream_files_by_name = dict(
-            (name, FakeFileDescriptorStringIO())
+    testcase.stream_files_by_name = {
+            name: FakeFileDescriptorStringIO()
             for name in ['stdin', 'stdout', 'stderr']
-            )
+            }
 
-    testcase.stream_files_by_path = dict(
-            (testcase.stream_file_paths[name],
-                testcase.stream_files_by_name[name])
+    testcase.stream_files_by_path = {
+            testcase.stream_file_paths[name]:
+                testcase.stream_files_by_name[name]
             for name in ['stdin', 'stdout', 'stderr']
-            )
+            }
 
 
 @unittest.mock.patch.object(os, "dup2")
@@ -2175,7 +2173,7 @@ class make_default_signal_map_TestCase(scaffold.TestCase):
         super().setUp()
 
         # Use whatever default string type this Python version needs.
-        signal_module_name = str('signal')
+        signal_module_name = 'signal'
         self.fake_signal_module = ModuleType(signal_module_name)
 
         fake_signal_names = [
@@ -2201,9 +2199,9 @@ class make_default_signal_map_TestCase(scaffold.TestCase):
                 'SIGTTOU': None,
                 'SIGTERM': 'terminate',
                 }
-        self.default_signal_map = dict(
-                (getattr(self.fake_signal_module, name), target)
-                for (name, target) in default_signal_map_by_name.items())
+        self.default_signal_map = {
+                getattr(self.fake_signal_module, name): target
+                for (name, target) in default_signal_map_by_name.items()}
 
     def test_returns_constructed_signal_map(self):
         """ Should return map per default. """
@@ -2247,7 +2245,7 @@ class set_signal_handlers_TestCase(scaffold.TestCase):
                 unittest.mock.call(signal_number, handler)
                 for (signal_number, handler) in signal_handler_map.items()]
         daemon.daemon.set_signal_handlers(signal_handler_map)
-        self.assertEquals(expected_calls, mock_func_signal_signal.mock_calls)
+        self.assertEqual(expected_calls, mock_func_signal_signal.mock_calls)
 
 
 @unittest.mock.patch.object(daemon.daemon.atexit, "register")

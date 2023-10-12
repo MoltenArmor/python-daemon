@@ -255,7 +255,7 @@ class InvalidFormatError(ValueError):
         return text
 
 
-class VersionInfoTranslator(object):
+class VersionInfoTranslator:
     """ Translator from document nodes to a version info stream. """
 
     # This class needs its base class to be a class from `docutils`.
@@ -433,9 +433,9 @@ def changelog_to_version_info_collection(infile):
     import docutils.writers
 
     ensure_class_bases_begin_with(
-            globals(), str('VersionInfoWriter'), docutils.writers.Writer)
+            globals(), 'VersionInfoWriter', docutils.writers.Writer)
     ensure_class_bases_begin_with(
-            globals(), str('VersionInfoTranslator'),
+            globals(), 'VersionInfoTranslator',
             docutils.nodes.SparseNodeVisitor)
 
     writer = VersionInfoWriter()
@@ -548,7 +548,7 @@ def has_changelog(command):
     return result
 
 
-class BuildCommand(setuptools.command.build.build, object):
+class BuildCommand(setuptools.command.build.build):
     """ Custom ‘build’ command for this distribution. """
 
     sub_commands = (
@@ -557,7 +557,7 @@ class BuildCommand(setuptools.command.build.build, object):
             ])
 
 
-class EggInfoCommand(setuptools.command.egg_info.egg_info, object):
+class EggInfoCommand(setuptools.command.egg_info.egg_info):
     """ Custom ‘egg_info’ command for this distribution. """
 
     sub_commands = ([
@@ -568,7 +568,7 @@ class EggInfoCommand(setuptools.command.egg_info.egg_info, object):
 version_info_filename = "version_info.json"
 
 
-class WriteVersionInfoCommand(setuptools.command.egg_info.egg_info, object):
+class WriteVersionInfoCommand(setuptools.command.egg_info.egg_info):
     """ Setuptools command to serialise version info metadata. """
 
     user_options = ([
@@ -580,7 +580,7 @@ class WriteVersionInfoCommand(setuptools.command.egg_info.egg_info, object):
 
     def initialize_options(self):
         """ Initialise command options to defaults. """
-        super(WriteVersionInfoCommand, self).initialize_options()
+        super().initialize_options()
         self.changelog_path = None
         self.outfile_path = None
 
@@ -590,7 +590,7 @@ class WriteVersionInfoCommand(setuptools.command.egg_info.egg_info, object):
                 'build',
                 ('force', 'force'))
 
-        super(WriteVersionInfoCommand, self).finalize_options()
+        super().finalize_options()
 
         if self.changelog_path is None:
             self.changelog_path = get_changelog_path(self.distribution)
@@ -607,7 +607,7 @@ class WriteVersionInfoCommand(setuptools.command.egg_info.egg_info, object):
         self.write_file("version info", self.outfile_path, content)
 
 
-class ChangelogAwareDistribution(setuptools.dist.Distribution, object):
+class ChangelogAwareDistribution(setuptools.dist.Distribution):
     """ A distribution of Python code for installation.
 
         This class gets the following attributes instead from the
@@ -621,7 +621,7 @@ class ChangelogAwareDistribution(setuptools.dist.Distribution, object):
     __metaclass__ = type
 
     def __init__(self, *args, **kwargs):
-        super(ChangelogAwareDistribution, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         if self.script_name is None:
             self.script_name = sys.argv[1]

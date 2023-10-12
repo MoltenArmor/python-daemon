@@ -480,9 +480,9 @@ class DaemonContext:
             context instance, suitable for passing to
             `set_signal_handlers`.
             """
-        signal_handler_map = dict(
-                (signal_number, self._make_signal_handler(target))
-                for (signal_number, target) in self.signal_map.items())
+        signal_handler_map = {
+                signal_number: self._make_signal_handler(target)
+                for (signal_number, target) in self.signal_map.items()}
         return signal_handler_map
 
 
@@ -509,11 +509,11 @@ def get_stream_file_descriptors(
         Include in the result only those streams that actually have a
         file descriptor (as returned by the `fileno` method).
         """
-    file_descriptors = set(
-            fd for fd in set(
+    file_descriptors = {
+            fd for fd in {
                 _get_file_descriptor(stream)
-                for stream in {stdin, stdout, stderr})
-            if fd is not None)
+                for stream in {stdin, stdout, stderr}}
+            if fd is not None}
     return file_descriptors
 
 
@@ -994,10 +994,10 @@ def make_default_signal_map():
             'SIGTTOU': None,
             'SIGTERM': 'terminate',
             }
-    signal_map = dict(
-            (getattr(signal, name), target)
+    signal_map = {
+            getattr(signal, name): target
             for (name, target) in name_map.items()
-            if hasattr(signal, name))
+            if hasattr(signal, name)}
 
     return signal_map
 
