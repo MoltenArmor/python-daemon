@@ -1,11 +1,11 @@
-# test_version.py
+# test/test_util_version.py
 # Part of ‘python-daemon’, an implementation of PEP 3143.
 #
 # This is free software, and you are welcome to redistribute it under
 # certain conditions; see the end of this file for copyright
 # information, grant of license, and disclaimer of warranty.
 
-""" Unit test for ‘version’ packaging module. """
+""" Unit test for ‘util.version’ packaging module. """
 
 import collections
 import functools
@@ -27,7 +27,7 @@ import setuptools.dist
 import testscenarios
 import testtools
 
-import version
+from util import version
 
 
 version.ensure_class_bases_begin_with(

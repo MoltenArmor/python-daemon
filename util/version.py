@@ -1,4 +1,4 @@
-# version.py
+# util/version.py
 # Part of ‘python-daemon’, an implementation of PEP 3143.
 #
 # This is free software, and you are welcome to redistribute it under
