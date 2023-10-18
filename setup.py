@@ -51,7 +51,7 @@ devel_requirements = [
 setup_kwargs = dict(
         distclass=util.version.ChangelogAwareDistribution,
         name=metadata.distribution_name,
-        packages=find_packages(exclude=["test"]),
+        packages=find_packages(exclude=["test", "util"]),
         cmdclass={
             "write_version_info": util.version.WriteVersionInfoCommand,
             "egg_info": util.version.EggInfoCommand,
