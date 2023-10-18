@@ -9,6 +9,7 @@
 
 # Minimum requirements for the build system.
 requires = [
+    "wheel",
     "setuptools >=62.4.0",
     "packaging",
     "docutils",
