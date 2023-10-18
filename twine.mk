@@ -24,13 +24,13 @@ pip-install-twine-requirements:
 
 .PHONY: twine-upload
 twine-upload: pip-install-twine-requirements
-twine-upload: setuptools-dist
+twine-upload: packaging-dist
 	$(PYTHON_TWINE) upload ${PYTHON_TWINE_UPLOAD_OPTS} ${TWINE_DIST_FILES}
 
 
 .PHONY: twine-check
 twine-check: pip-install-twine-requirements
-twine-check: setuptools-dist
+twine-check: packaging-dist
 	$(PYTHON_TWINE) check ${TWINE_DIST_FILES}
 
 
