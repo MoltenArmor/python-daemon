@@ -52,6 +52,22 @@ dist:
 install: build
 
 
+include packaging.mk
+
+build: packaging-build
+
+install: packaging-install
+
+.PHONY: bdist
+bdist: packaging-bdist
+
+.PHONY: sdist
+sdist: packaging-sdist
+
+.PHONY: dist
+dist: sdist
+
+
 include setuptools.mk
 
 build: setuptools-build
