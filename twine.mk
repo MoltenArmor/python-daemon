@@ -19,7 +19,7 @@ TWINE_DIST_FILES ?= ${DIST_DIR}/*
 
 .PHONY: pip-install-twine-requirements
 pip-install-twine-requirements:
-	$(PYTHON) -m pip install .[devel]
+	$(PYTHON) -m pip install --no-input ${PIP_DEVEL_DEPENDENCIES}
 
 
 .PHONY: twine-upload
