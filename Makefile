@@ -68,21 +68,6 @@ sdist: packaging-sdist
 dist: sdist
 
 
-include setuptools.mk
-
-build: setuptools-build
-
-install: setuptools-install
-
-.PHONY: bdist
-bdist: setuptools-bdist
-
-.PHONY: sdist
-sdist: setuptools-sdist
-
-dist: sdist
-
-
 include test.mk
 
 
@@ -96,7 +81,6 @@ test: twine-check
 
 .PHONY: clean
 clean:
-	$(PYTHON_SETUP) "$@"
 	$(RM) -r ${GENERATED_FILES}
 
 
