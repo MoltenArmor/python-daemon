@@ -26,9 +26,9 @@ import setuptools.command.build_py
 import setuptools.command.egg_info
 import setuptools.dist
 
+from .metadata import parse_person_field
 from .version import (
     generate_version_info_from_changelog,
-    parse_person_field,
     serialise_version_info_from_mapping,
 )
 
