@@ -44,6 +44,11 @@ GENERATED_FILES += $(shell find $(CURDIR) \
 	\) )
 
 
+.PHONY: pip-install-devel-requirements
+pip-install-devel-requirements:
+	$(PYTHON) -m pip install --no-input ${PIP_DEVEL_DEPENDENCIES}
+
+
 .PHONY: packaging-build
 packaging-build:
 	$(PACKAGING_BUILD) build

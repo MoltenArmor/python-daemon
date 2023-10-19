@@ -17,11 +17,6 @@ PYTHON_TWINE_UPLOAD_OPTS ?= --sign --identity ${RELEASE_SIGNING_KEYID}
 TWINE_DIST_FILES ?= ${DIST_DIR}/*
 
 
-.PHONY: pip-install-devel-requirements
-pip-install-devel-requirements:
-	$(PYTHON) -m pip install --no-input ${PIP_DEVEL_DEPENDENCIES}
-
-
 .PHONY: twine-upload
 twine-upload: pip-install-devel-requirements
 twine-upload: packaging-dist
