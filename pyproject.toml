@@ -58,6 +58,14 @@ build-backend = "setuptools.build_meta"
 # Can the project be safely installed and run from a zip file?
 zip-safe = false
 
+[tool.setuptools.packages.find]
+
+# Folders that contain the packages (default: ["."])
+where = ["."]
+
+# Filename globs to exclude from package discovery.
+exclude = ["test", "util"]
+
 
 [tool.coverage.run]
 

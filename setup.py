@@ -13,10 +13,7 @@
 import pathlib
 import sys
 
-from setuptools import (
-    find_packages,
-    setup,
-)
+from setuptools import setup
 
 # This module is not inside a package, so we can't use relative imports. We
 # instead add its directory to the import path.
@@ -65,7 +62,6 @@ devel_requirements = [
 
 setup_kwargs = dict(
         version=latest_changelog_entry.version,
-        packages=find_packages(exclude=["test", "util"]),
 
         # Setuptools metadata.
         setup_requires=build_requirements,
