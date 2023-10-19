@@ -22,7 +22,7 @@ from setuptools import (
 # This module is not inside a package, so we can't use relative imports. We
 # instead add its directory to the import path.
 sys.path.insert(0, os.path.dirname(__file__))
-import util.version  # noqa: E402
+import util.packaging  # noqa: E402
 
 
 main_module_name = 'daemon'
@@ -49,13 +49,13 @@ devel_requirements = [
 
 
 setup_kwargs = dict(
-        distclass=util.version.ChangelogAwareDistribution,
+        distclass=util.packaging.ChangelogAwareDistribution,
         name=metadata.distribution_name,
         packages=find_packages(exclude=["test", "util"]),
         cmdclass={
-            "write_version_info": util.version.WriteVersionInfoCommand,
-            "egg_info": util.version.EggInfoCommand,
-            "build": util.version.BuildCommand,
+            "write_version_info": util.packaging.WriteVersionInfoCommand,
+            "egg_info": util.packaging.EggInfoCommand,
+            "build": util.packaging.BuildCommand,
             },
 
         # Setuptools metadata.
