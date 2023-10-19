@@ -44,6 +44,13 @@ GENERATED_FILES += $(shell find $(CURDIR) \
 	\) )
 
 
+.PHONY: pip-confirm-devel-dependencies-installed
+pip-confirm-devel-dependencies-installed:
+	$(PYTHON) -m pip install \
+		--dry-run --no-input \
+		--no-index --no-build-isolation \
+		${PIP_DEVEL_DEPENDENCIES}
+
 .PHONY: pip-install-devel-requirements
 pip-install-devel-requirements:
 	$(PYTHON) -m pip install --no-input ${PIP_DEVEL_DEPENDENCIES}
