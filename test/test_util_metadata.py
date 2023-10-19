@@ -7,6 +7,8 @@
 
 """ Unit test for ‘util.metadata’ packaging module. """
 
+import textwrap
+
 import testscenarios
 import testtools
 
@@ -45,6 +47,139 @@ class parse_person_field_TestCase(
         else:
             result = util.metadata.parse_person_field(self.test_person)
             self.assertEqual(self.expected_result, result)
+
+
+class FakeObject(object):
+    """ A fake object for testing. """
+
+
+class docstring_from_object_TestCase(
+        testscenarios.WithScenarios, testtools.TestCase):
+    """ Test cases for ‘docstring_from_object’ function. """
+
+    scenarios = [
+            ('single-line', {
+                'test_docstring': textwrap.dedent("""\
+                    Lorem ipsum, dolor sit amet.
+                    """),
+                'expected_result': "Lorem ipsum, dolor sit amet.",
+                }),
+            ('synopsis one-paragraph', {
+                'test_docstring': textwrap.dedent("""\
+                    Lorem ipsum, dolor sit amet.
+
+                    Donec et semper sapien, et faucibus felis. Nunc suscipit
+                    quam id lectus imperdiet varius. Praesent mattis arcu in
+                    sem laoreet, at tincidunt velit venenatis.
+                    """),
+                'expected_result': textwrap.dedent("""\
+                    Lorem ipsum, dolor sit amet.
+
+                    Donec et semper sapien, et faucibus felis. Nunc suscipit
+                    quam id lectus imperdiet varius. Praesent mattis arcu in
+                    sem laoreet, at tincidunt velit venenatis."""),
+                }),
+            ('synopsis three-paragraphs', {
+                'test_docstring': textwrap.dedent("""\
+                    Lorem ipsum, dolor sit amet.
+
+                    Ut ac ultrices turpis. Nam tellus ex, scelerisque ac
+                    tellus ac, placerat convallis erat. Nunc id mi libero.
+
+                    Donec et semper sapien, et faucibus felis. Nunc suscipit
+                    quam id lectus imperdiet varius. Praesent mattis arcu in
+                    sem laoreet, at tincidunt velit venenatis.
+
+                    Suspendisse potenti. Fusce egestas id quam non posuere.
+                    Maecenas egestas faucibus elit. Aliquam erat volutpat.
+                    """),
+                'expected_result': textwrap.dedent("""\
+                    Lorem ipsum, dolor sit amet.
+
+                    Ut ac ultrices turpis. Nam tellus ex, scelerisque ac
+                    tellus ac, placerat convallis erat. Nunc id mi libero.
+
+                    Donec et semper sapien, et faucibus felis. Nunc suscipit
+                    quam id lectus imperdiet varius. Praesent mattis arcu in
+                    sem laoreet, at tincidunt velit venenatis.
+
+                    Suspendisse potenti. Fusce egestas id quam non posuere.
+                    Maecenas egestas faucibus elit. Aliquam erat volutpat."""),
+                }),
+            ]
+
+    def setUp(self):
+        """ Set up fixtures for this test case. """
+        super().setUp()
+        self.test_object = FakeObject()
+        self.test_object.__doc__ = self.test_docstring
+
+    def test_returns_expected_result(self):
+        """ Should return expected result. """
+        result = util.metadata.docstring_from_object(self.test_object)
+        self.assertEqual(self.expected_result, result)
+
+
+class synopsis_and_description_from_docstring_TestCase(
+        testscenarios.WithScenarios, testtools.TestCase):
+    """ Test cases for ‘synopsis_and_description_from_docstring’ function. """
+
+    scenarios = [
+            ('single-line', {
+                'test_docstring': textwrap.dedent("""\
+                    Lorem ipsum, dolor sit amet.
+                    """),
+                'expected_synopsis': "Lorem ipsum, dolor sit amet.",
+                'expected_description': "",
+                }),
+            ('synopsis one-paragraph', {
+                'test_docstring': textwrap.dedent("""\
+                    Lorem ipsum, dolor sit amet.
+
+                    Donec et semper sapien, et faucibus felis. Nunc suscipit
+                    quam id lectus imperdiet varius. Praesent mattis arcu in
+                    sem laoreet, at tincidunt velit venenatis.
+                    """),
+                'expected_synopsis': "Lorem ipsum, dolor sit amet.",
+                'expected_description': textwrap.dedent("""\
+                    Donec et semper sapien, et faucibus felis. Nunc suscipit
+                    quam id lectus imperdiet varius. Praesent mattis arcu in
+                    sem laoreet, at tincidunt velit venenatis."""),
+                }),
+            ('synopsis three-paragraphs', {
+                'test_docstring': textwrap.dedent("""\
+                    Lorem ipsum, dolor sit amet.
+
+                    Ut ac ultrices turpis. Nam tellus ex, scelerisque ac
+                    tellus ac, placerat convallis erat. Nunc id mi libero.
+
+                    Donec et semper sapien, et faucibus felis. Nunc suscipit
+                    quam id lectus imperdiet varius. Praesent mattis arcu in
+                    sem laoreet, at tincidunt velit venenatis.
+
+                    Suspendisse potenti. Fusce egestas id quam non posuere.
+                    Maecenas egestas faucibus elit. Aliquam erat volutpat.
+                    """),
+                'expected_synopsis': "Lorem ipsum, dolor sit amet.",
+                'expected_description': textwrap.dedent("""\
+                    Ut ac ultrices turpis. Nam tellus ex, scelerisque ac
+                    tellus ac, placerat convallis erat. Nunc id mi libero.
+
+                    Donec et semper sapien, et faucibus felis. Nunc suscipit
+                    quam id lectus imperdiet varius. Praesent mattis arcu in
+                    sem laoreet, at tincidunt velit venenatis.
+
+                    Suspendisse potenti. Fusce egestas id quam non posuere.
+                    Maecenas egestas faucibus elit. Aliquam erat volutpat."""),
+                }),
+            ]
+
+    def test_returns_expected_result(self):
+        """ Should return expected result. """
+        result = util.metadata.synopsis_and_description_from_docstring(
+                self.test_docstring)
+        expected_result = (self.expected_synopsis, self.expected_description)
+        self.assertEqual(expected_result, result)
 
 
 # Copyright © 2008–2023 Ben Finney <ben+python@benfinney.id.au>

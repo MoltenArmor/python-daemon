@@ -11,7 +11,6 @@
 """ Distribution setup for ‘python-daemon’ library. """
 
 import os.path
-import pydoc
 import sys
 
 from setuptools import (
@@ -23,6 +22,7 @@ from setuptools import (
 # instead add its directory to the import path.
 sys.path.insert(0, os.path.dirname(__file__))
 import util.packaging  # noqa: E402
+import util.metadata  # noqa: E402
 
 
 main_module_name = 'daemon'
@@ -32,7 +32,10 @@ main_module = __import__(
         level=0, fromlist=main_module_fromlist)
 metadata = main_module._metadata
 
-(synopsis, long_description) = pydoc.splitdoc(pydoc.getdoc(main_module))
+main_module_docstring = util.metadata.docstring_from_object(main_module)
+(synopsis, long_description) = (
+    util.metadata.synopsis_and_description_from_docstring(
+        main_module_docstring))
 
 
 test_requirements = [

@@ -12,6 +12,8 @@
     """
 
 import collections
+import inspect
+import pydoc
 import re
 
 
@@ -42,6 +44,34 @@ def parse_person_field(value):
             result = ParsedPerson(name=value, email=None)
 
     return result
+
+
+def docstring_from_object(object):
+    """ Extract the `object` docstring as a simple text string.
+
+        :param object: The Python object to inspect.
+        :return: The docstring (text), “cleaned” according to :PEP:`257`.
+        """
+    docstring = inspect.getdoc(object)
+    return docstring
+
+
+def synopsis_and_description_from_docstring(docstring):
+    """ Parse one-line synopsis and long description, from `docstring`.
+
+        :param docstring: The documentation string (“docstring”, text) to
+            parse.
+        :return: A 2-tuple (`synopsis`, `long_description`) of the values
+            parsed from `docstring`.
+
+        The `docstring` is expected to be of the form described in :PEP:`257`:
+
+        > Multi-line docstrings consist of a summary line just like a one-line
+        > docstring, followed by a blank line, followed by a more elaborate
+        > description.
+        """
+    (synopsis, long_description) = pydoc.splitdoc(docstring)
+    return (synopsis, long_description)
 
 
 # Copyright © 2008–2023 Ben Finney <ben+python@benfinney.id.au>
