@@ -25,17 +25,14 @@ import util.packaging  # noqa: E402
 import util.metadata  # noqa: E402
 
 
-main_module_name = 'daemon'
-main_module_fromlist = ['_metadata']
-main_module = __import__(
-        main_module_name,
-        level=0, fromlist=main_module_fromlist)
+main_module = util.packaging.main_module_by_name(
+        'daemon', fromlist=['_metadata'])
 metadata = main_module._metadata
 
 main_module_docstring = util.metadata.docstring_from_object(main_module)
 (synopsis, long_description) = (
-    util.metadata.synopsis_and_description_from_docstring(
-        main_module_docstring))
+        util.metadata.synopsis_and_description_from_docstring(
+            main_module_docstring))
 
 
 test_requirements = [

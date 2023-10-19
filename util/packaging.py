@@ -33,6 +33,22 @@ from .version import (
 )
 
 
+def main_module_by_name(
+        module_name,
+        *,
+        fromlist=None,
+):
+    """ Get the main module of this project, named `module_name`.
+
+        :param module_name: The name of the module to import.
+        :param fromlist: The list (of `str`) of names of objects to import in
+            the module namespace.
+        :return: The Python `module` object representing the main module.
+        """
+    module = __import__(module_name, level=0, fromlist=fromlist)
+    return module
+
+
 changelog_filename = "ChangeLog"
 
 
