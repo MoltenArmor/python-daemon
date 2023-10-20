@@ -26,7 +26,11 @@ import setuptools.command.build_py
 import setuptools.command.egg_info
 import setuptools.dist
 
-from .metadata import parse_person_field
+from .metadata import (
+    docstring_from_object,
+    parse_person_field,
+    synopsis_and_description_from_docstring,
+)
 from .version import (
     generate_version_info_from_changelog,
     serialise_version_info_from_mapping,
@@ -137,6 +141,37 @@ class WriteVersionInfoCommand(setuptools.command.egg_info.egg_info):
                 self.changelog_path)
         content = serialise_version_info_from_mapping(version_info)
         self.write_file("version info", self.outfile_path, content)
+
+
+def derive_dist_description(
+        distribution,
+        *,
+        content_type="text/x-rst",
+):
+    """ Derive description fields for `distribution`, from the main module.
+
+        :param distribution: The `setuptools.dist.Distribution` to inspect and
+            modify.
+        :param content_type: The MIME Content-Type value to describe the
+            content of the long description.
+        :return: ``None``.
+
+        Read the main module's docstring, and derive values for metadata
+        attributes of `distribution`:
+
+        * `description`: The synopsis (one-line) description from the
+          docstring.
+        * `long_description: The remainder (separated by a blank line after the
+          synopsis) of the docstring content.
+        * `long_description_content_type`: Set to `content_type` value.
+        """
+    main_module = main_module_by_name('daemon')
+    main_module_docstring = docstring_from_object(main_module)
+    (synopsis, long_description) = synopsis_and_description_from_docstring(
+        main_module_docstring)
+    distribution.metadata.description = synopsis
+    distribution.metadata.long_description = long_description
+    distribution.metadata.long_description_content_type = content_type
 
 
 class ChangelogAwareDistribution(setuptools.dist.Distribution):

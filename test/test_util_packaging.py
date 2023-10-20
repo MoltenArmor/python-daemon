@@ -12,6 +12,7 @@ import collections
 import io
 import os
 import os.path
+import textwrap
 import types
 import unittest.mock
 
@@ -118,6 +119,105 @@ def make_fake_distribution(
     distribution = FakeDistribution(**fields)
 
     return distribution
+
+
+def patch_main_module_by_name(
+        testcase,
+        *,
+        fake_module=None,
+        fake_module_name='lorem',
+):
+    """ Patch the ‘main_module_by_name’ function for the `testcase`. """
+    if fake_module is None:
+        fake_module = FakeModule(name=fake_module_name)
+    func_patcher = unittest.mock.patch.object(
+            packaging, 'main_module_by_name',
+            return_value=fake_module)
+    func_patcher.start()
+    testcase.addCleanup(func_patcher.stop)
+
+
+def patch_docstring_from_object(testcase, *, fake_docstring):
+    """ Patch the ‘docstring_from_object’ function for the `testcase`. """
+    func_patcher = unittest.mock.patch.object(
+            packaging, 'docstring_from_object',
+            return_value=fake_docstring)
+    func_patcher.start()
+    testcase.addCleanup(func_patcher.stop)
+
+
+class derive_dist_description_TestCase(
+        testscenarios.WithScenarios, testtools.TestCase):
+    """ Test cases for ‘derive_dist_description’ function. """
+
+    scenarios = [
+            ('simple', {
+                'test_args': {
+                    'distribution': setuptools.dist.Distribution(),
+                    },
+                'test_docstring': textwrap.dedent("""\
+                    Lorem ipsum, dolor sit amet.
+
+                    Donec et semper sapien, et faucibus felis. Nunc suscipit
+                    quam id lectus imperdiet varius. Praesent mattis arcu in
+                    sem laoreet, at tincidunt velit venenatis.
+                    """),
+                'expected_synopsis': "Lorem ipsum, dolor sit amet.",
+                'expected_long_description': textwrap.dedent("""\
+                    Donec et semper sapien, et faucibus felis. Nunc suscipit
+                    quam id lectus imperdiet varius. Praesent mattis arcu in
+                    sem laoreet, at tincidunt velit venenatis."""),
+                'expected_long_description_content_type': "text/x-rst",
+                }),
+            ('content-type-specified', {
+                'test_args': {
+                    'distribution': setuptools.dist.Distribution(),
+                    'content_type': "text/markdown",
+                    },
+                'test_docstring': textwrap.dedent("""\
+                    Lorem ipsum, dolor sit amet.
+
+                    Donec et semper sapien, et faucibus felis. Nunc suscipit
+                    quam id lectus imperdiet varius. Praesent mattis arcu in
+                    sem laoreet, at tincidunt velit venenatis.
+                    """),
+                'expected_synopsis': "Lorem ipsum, dolor sit amet.",
+                'expected_long_description': textwrap.dedent("""\
+                    Donec et semper sapien, et faucibus felis. Nunc suscipit
+                    quam id lectus imperdiet varius. Praesent mattis arcu in
+                    sem laoreet, at tincidunt velit venenatis."""),
+                'expected_long_description_content_type': "text/markdown",
+                }),
+            ]
+
+    def setUp(self):
+        """ Set up fixtures for this test case. """
+        super().setUp()
+
+        patch_main_module_by_name(self)
+        patch_docstring_from_object(self, fake_docstring=self.test_docstring)
+        self.test_distribution = self.test_args['distribution']
+
+    def test_sets_expected_synopsis(self):
+        """ Should set the expected `metadata.description` value. """
+        packaging.derive_dist_description(**self.test_args)
+        self.assertEqual(
+                self.expected_synopsis,
+                self.test_distribution.metadata.description)
+
+    def test_sets_expected_long_description(self):
+        """ Should set the expected `metadata.long_description` value. """
+        packaging.derive_dist_description(**self.test_args)
+        self.assertEqual(
+                self.expected_long_description,
+                self.test_distribution.metadata.long_description)
+
+    def test_sets_expected_long_description_content_type(self):
+        """ Should set expected `metadata.long_description_content_type`. """
+        packaging.derive_dist_description(**self.test_args)
+        self.assertEqual(
+                self.expected_long_description_content_type,
+                self.test_distribution.metadata.long_description_content_type)
 
 
 class get_changelog_path_TestCase(
