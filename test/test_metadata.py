@@ -7,7 +7,6 @@
 
 """ Unit test for ‘_metadata’ private module. """
 
-import collections
 import functools
 import json
 import re
@@ -59,7 +58,6 @@ class metadata_value_TestCase(scaffold.TestCaseWithScenarios):
     expected_str_attributes = {
             'version_installed',
             'author',
-            'copyright',
             'license',
             'url',
             }
@@ -89,95 +87,8 @@ class metadata_value_TestCase(scaffold.TestCaseWithScenarios):
                 instance, HasAttribute(self.ducktype_attribute_name))
 
 
-class YearRange_TestCase(scaffold.TestCaseWithScenarios):
-    """ Test cases for ‘YearRange’ class. """
-
-    scenarios = [
-            ('simple', {
-                'begin_year': 1970,
-                'end_year': 1979,
-                'expected_text': "1970–1979",
-                }),
-            ('same year', {
-                'begin_year': 1970,
-                'end_year': 1970,
-                'expected_text': "1970",
-                }),
-            ('no end year', {
-                'begin_year': 1970,
-                'end_year': None,
-                'expected_text': "1970",
-                }),
-            ]
-
-    def setUp(self):
-        """ Set up test fixtures. """
-        super().setUp()
-
-        self.test_instance = metadata.YearRange(
-                self.begin_year, self.end_year)
-
-    def test_text_representation_as_expected(self):
-        """ Text representation should be as expected. """
-        result = str(self.test_instance)
-        self.assertEqual(result, self.expected_text)
-
-
-FakeYearRange = collections.namedtuple('FakeYearRange', ['begin', 'end'])
-
-
-@unittest.mock.patch.object(metadata, 'YearRange', new=FakeYearRange)
-class make_year_range_TestCase(scaffold.TestCaseWithScenarios):
-    """ Test cases for ‘make_year_range’ function. """
-
-    scenarios = [
-            ('simple', {
-                'begin_year': "1970",
-                'end_date': "1979-01-01",
-                'expected_range': FakeYearRange(begin=1970, end=1979),
-                }),
-            ('same year', {
-                'begin_year': "1970",
-                'end_date': "1970-01-01",
-                'expected_range': FakeYearRange(begin=1970, end=1970),
-                }),
-            ('no end year', {
-                'begin_year': "1970",
-                'end_date': None,
-                'expected_range': FakeYearRange(begin=1970, end=None),
-                }),
-            ('end date UNKNOWN token', {
-                'begin_year': "1970",
-                'end_date': "UNKNOWN",
-                'expected_range': FakeYearRange(begin=1970, end=None),
-                }),
-            ('end date FUTURE token', {
-                'begin_year': "1970",
-                'end_date': "FUTURE",
-                'expected_range': FakeYearRange(begin=1970, end=None),
-                }),
-            ]
-
-    def test_result_matches_expected_range(self):
-        """ Result should match expected YearRange. """
-        result = metadata.make_year_range(self.begin_year, self.end_date)
-        self.assertEqual(result, self.expected_range)
-
-
 class metadata_content_TestCase(scaffold.TestCase):
     """ Test cases for content of metadata. """
-
-    def test_copyright_formatted_correctly(self):
-        """ Copyright statement should be formatted correctly. """
-        regex_pattern = (
-                r"Copyright © "
-                r"\d{4}"  # Four-digit year.
-                r"(?:–\d{4})?"  # Optional range dash and four-digit year.
-                )
-        regex_flags = re.UNICODE
-        self.assertThat(
-                metadata.copyright,
-                testtools.matchers.MatchesRegex(regex_pattern, regex_flags))
 
     def test_author_formatted_correctly(self):
         """ Author information should be formatted correctly. """
@@ -189,12 +100,6 @@ class metadata_content_TestCase(scaffold.TestCase):
         self.assertThat(
                 metadata.author,
                 testtools.matchers.MatchesRegex(regex_pattern, regex_flags))
-
-    def test_copyright_contains_author(self):
-        """ Copyright information should contain author information. """
-        self.assertThat(
-                metadata.copyright,
-                testtools.matchers.Contains(metadata.author))
 
     def test_url_parses_correctly(self):
         """ Homepage URL should parse correctly. """
