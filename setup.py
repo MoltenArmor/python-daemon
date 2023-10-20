@@ -19,6 +19,8 @@ from setuptools import (
     setup,
 )
 
+# This module is not inside a package, so we can't use relative imports. We
+# instead add its directory to the import path.
 sys.path.insert(0, os.path.dirname(__file__))
 import version  # noqa: E402
 
