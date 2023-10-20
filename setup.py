@@ -43,7 +43,6 @@ devel_requirements = [
 
 
 setup_kwargs = dict(
-        distclass=util.packaging.ChangelogAwareDistribution,
         name=metadata.distribution_name,
         packages=find_packages(exclude=["test", "util"]),
         cmdclass={
@@ -54,6 +53,8 @@ setup_kwargs = dict(
         entry_points={
             "setuptools.finalize_distribution_options": [
                 "description_fields = util.packaging:derive_dist_description",
+                "version = util.packaging:derive_version",
+                "maintainer = util.packaging:derive_maintainer",
                 ],
             },
 
