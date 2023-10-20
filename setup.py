@@ -22,17 +22,11 @@ from setuptools import (
 # instead add its directory to the import path.
 sys.path.insert(0, os.path.dirname(__file__))
 import util.packaging  # noqa: E402
-import util.metadata  # noqa: E402
 
 
 main_module = util.packaging.main_module_by_name(
         'daemon', fromlist=['_metadata'])
 metadata = main_module._metadata
-
-main_module_docstring = util.metadata.docstring_from_object(main_module)
-(synopsis, long_description) = (
-        util.metadata.synopsis_and_description_from_docstring(
-            main_module_docstring))
 
 
 test_requirements = [
@@ -57,6 +51,11 @@ setup_kwargs = dict(
             "egg_info": util.packaging.EggInfoCommand,
             "build": util.packaging.BuildCommand,
             },
+        entry_points={
+            "setuptools.finalize_distribution_options": [
+                "description_fields = util.packaging:derive_dist_description",
+                ],
+            },
 
         # Setuptools metadata.
         zip_safe=False,
@@ -79,11 +78,8 @@ setup_kwargs = dict(
         # PyPI metadata.
         author=metadata.author_name,
         author_email=metadata.author_email,
-        description=synopsis,
         license=metadata.license,
         keywords="daemon fork unix".split(),
-        long_description=long_description,
-        long_description_content_type="text/x-rst",
         classifiers=[
             # Reference: <URL:https://pypi.org/classifiers/>
             "Development Status :: 5 - Production/Stable",
