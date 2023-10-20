@@ -174,6 +174,32 @@ def derive_dist_description(
     distribution.metadata.long_description_content_type = content_type
 
 
+def derive_version(distribution):
+    """ Derive a `version` value for `distribution`, from change log document.
+
+        :param distribution: The `setuptools.dist.Distribution` to inspect and
+            modify.
+        :return: ``None``.
+        """
+    changelog_path = get_changelog_path(distribution)
+    version_info = generate_version_info_from_changelog(changelog_path)
+    distribution.metadata.version = version_info['version']
+
+
+def derive_maintainer(distribution):
+    """ Derive maintainer values for `distribution`, from change log document.
+
+        :param distribution: The `setuptools.dist.Distribution` to inspect and
+            modify.
+        :return: ``None``.
+        """
+    changelog_path = get_changelog_path(distribution)
+    version_info = generate_version_info_from_changelog(changelog_path)
+    person = parse_person_field(version_info['maintainer'])
+    distribution.metadata.maintainer = person.name
+    distribution.metadata.maintainer_email = person.email
+
+
 class ChangelogAwareDistribution(setuptools.dist.Distribution):
     """ A distribution of Python code for installation.
 

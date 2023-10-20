@@ -220,6 +220,98 @@ class derive_dist_description_TestCase(
                 self.test_distribution.metadata.long_description_content_type)
 
 
+def patch_get_changelog_path(testcase, *, fake_path):
+    """ Patch the ‘main_module_by_name’ function for the `testcase`. """
+    func_patcher = unittest.mock.patch.object(
+            packaging, 'get_changelog_path',
+            return_value=fake_path)
+    func_patcher.start()
+    testcase.addCleanup(func_patcher.stop)
+
+
+def patch_generate_version_info_from_changelog(testcase, *, fake_result):
+    """ Patch ‘generate_version_info_from_changelog’ for the `testcase`. """
+    func_patcher = unittest.mock.patch.object(
+            packaging, 'generate_version_info_from_changelog',
+            return_value=fake_result)
+    func_patcher.start()
+    testcase.addCleanup(func_patcher.stop)
+
+
+class derive_version_TestCase(
+        testscenarios.WithScenarios, testtools.TestCase):
+    """ Test cases for ‘derive_version’ function. """
+
+    scenarios = [
+            ('simple', {
+                'fake_version_info': {
+                    'release_date': "2023-10-20",
+                    'version': "4.0.7",
+                    'maintainer': "Yolanda Hall <yhall@kline-barnes.biz>",
+                    'body': None,
+                    },
+                'expected_version': "4.0.7",
+                }),
+            ]
+
+    def setUp(self):
+        """ Set up fixtures for this test case. """
+        super().setUp()
+
+        patch_get_changelog_path(self, fake_path="/nonexistent")
+        patch_generate_version_info_from_changelog(
+                self, fake_result=self.fake_version_info)
+        self.test_distribution = setuptools.dist.Distribution()
+
+    def test_sets_expected_version_attribute(self):
+        """ Should set expected `metadata.version` value. """
+        packaging.derive_version(self.test_distribution)
+        self.assertEqual(
+                self.expected_version,
+                self.test_distribution.metadata.version)
+
+
+class derive_maintainer_TestCase(
+        testscenarios.WithScenarios, testtools.TestCase):
+    """ Test cases for ‘derive_maintainer’ function. """
+
+    scenarios = [
+            ('simple', {
+                'fake_version_info': {
+                    'release_date': "2023-10-20",
+                    'version': "4.0.7",
+                    'maintainer': "Yolanda Hall <yhall@kline-barnes.biz>",
+                    'body': None,
+                    },
+                'expected_maintainer': "Yolanda Hall",
+                'expected_maintainer_email': "yhall@kline-barnes.biz",
+                }),
+            ]
+
+    def setUp(self):
+        """ Set up fixtures for this test case. """
+        super().setUp()
+
+        patch_get_changelog_path(self, fake_path="/nonexistent")
+        patch_generate_version_info_from_changelog(
+                self, fake_result=self.fake_version_info)
+        self.test_distribution = setuptools.dist.Distribution()
+
+    def test_sets_expected_maintainer_attribute(self):
+        """ Should set expected `metadata.maintainer` value. """
+        packaging.derive_maintainer(self.test_distribution)
+        self.assertEqual(
+                self.expected_maintainer,
+                self.test_distribution.metadata.maintainer)
+
+    def test_sets_expected_maintainer_email_attribute(self):
+        """ Should set expected `metadata.maintainer_email` value. """
+        packaging.derive_maintainer(self.test_distribution)
+        self.assertEqual(
+                self.expected_maintainer_email,
+                self.test_distribution.metadata.maintainer_email)
+
+
 class get_changelog_path_TestCase(
         testscenarios.WithScenarios, testtools.TestCase):
     """ Test cases for ‘get_changelog_path’ function. """
