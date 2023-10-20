@@ -16,9 +16,7 @@
     * JSON <https://docs.python.org/3/reference/json.html>
     """
 
-import functools
 import os.path
-import sys
 
 import setuptools
 import setuptools.command.build
@@ -198,54 +196,6 @@ def derive_maintainer(distribution):
     person = parse_person_field(version_info['maintainer'])
     distribution.metadata.maintainer = person.name
     distribution.metadata.maintainer_email = person.email
-
-
-class ChangelogAwareDistribution(setuptools.dist.Distribution):
-    """ A distribution of Python code for installation.
-
-        This class gets the following attributes instead from the
-        ‘ChangeLog’ document:
-
-        * version
-        * maintainer
-        * maintainer_email
-        """
-
-    __metaclass__ = type
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        if self.script_name is None:
-            self.script_name = sys.argv[1]
-
-        # Undo the per-instance delegation for these methods.
-        del (
-                self.get_version,
-                self.get_maintainer,
-                self.get_maintainer_email,
-                )
-
-    @functools.lru_cache(maxsize=128)
-    def get_version_info(self):
-        changelog_path = get_changelog_path(self)
-        version_info = generate_version_info_from_changelog(changelog_path)
-        return version_info
-
-    def get_version(self):
-        version_info = self.get_version_info()
-        version_string = version_info['version']
-        return version_string
-
-    def get_maintainer(self):
-        version_info = self.get_version_info()
-        person = parse_person_field(version_info['maintainer'])
-        return person.name
-
-    def get_maintainer_email(self):
-        version_info = self.get_version_info()
-        person = parse_person_field(version_info['maintainer'])
-        return person.email
 
 
 # Copyright © 2008–2023 Ben Finney <ben+python@benfinney.id.au>
