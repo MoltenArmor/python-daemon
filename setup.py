@@ -45,11 +45,6 @@ devel_requirements = [
 setup_kwargs = dict(
         name=metadata.distribution_name,
         packages=find_packages(exclude=["test", "util"]),
-        cmdclass={
-            "write_version_info": util.packaging.WriteVersionInfoCommand,
-            "egg_info": util.packaging.EggInfoCommand,
-            "build": util.packaging.BuildCommand,
-            },
         entry_points={
             "setuptools.finalize_distribution_options": [
                 "description_fields = util.packaging:derive_dist_description",
