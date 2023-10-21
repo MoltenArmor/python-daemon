@@ -36,6 +36,21 @@ Bugs Fixed:
 
   Closes: Pagure #94. Thanks to Branch Vincent for assistance.
 
+Changed:
+
+* Migrate all Setuptools-specific options to PEP 621 declarations.
+
+  The ‘pyproject.toml’ configuration file now contains explicit declaration of
+  all project configuration, ending the need to run ‘setup.py’ as a program.
+
+Removed:
+
+* Remove dynamically-constructed non-standard metadata attributes.
+
+  All these attributes are now met by the standard `“Core Metadata”
+  <https://packaging.python.org/en/latest/specifications/core-metadata/>`_
+  specification.
+
 
 Version 3.0.2
 =============
@@ -66,14 +81,6 @@ Changed:
   program.
 
   Closes: Pagure #87. Thanks to Attila Lendvai for the report.
-
-Removed:
-
-* Remove the custom ‘daemon._metadata’ module.
-
-  All the features of that module are now met by standard `“Core Metadata”
-  <https://packaging.python.org/en/latest/specifications/core-metadata/>`_
-  specification.
 
 
 Version 3.0.1
