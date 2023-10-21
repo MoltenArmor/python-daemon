@@ -35,6 +35,17 @@ Bugs Fixed:
   This removes the need for Setuptools “entry points” feature at build time.
 
   Closes: Pagure #94. Thanks to Branch Vincent for assistance.
+  Closes: Pagure #86.
+  Closes: Pagure #85. Thanks to Attila Lendvai for the report.
+  Closes: Pagure #82.
+
+* Migrate optional dependencies to PEP 621 declarations.
+
+  This uses the named groups for developing and building the package, versus
+  the core requirements for installing and running the distribution.
+
+  Closes: Pagure #52. Thanks to Stoyan Nikolov, Neil Hanlon.
+  Closes: Pagure #93. Thanks to Michał Górny for the report.
 
 Changed:
 
@@ -42,6 +53,8 @@ Changed:
 
   The ‘pyproject.toml’ configuration file now contains explicit declaration of
   all project configuration, ending the need to run ‘setup.py’ as a program.
+
+  Closes: Pagure #71.
 
 Removed:
 
