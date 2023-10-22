@@ -879,8 +879,9 @@ def _validate_fd_values(fds):
     invalid_fds = set(filter((lambda fd: not isinstance(fd, int)), fds))
     if invalid_fds:
         value_to_complain_about = next(invalid_fds)
-        raise TypeError(
-                "not an integer file descriptor", value_to_complain_about)
+        message = "not an integer file descriptor: {!r}".format(
+                value_to_complain_about)
+        raise TypeError(message)
 
 
 def _get_candidate_file_descriptor_ranges(exclude):
