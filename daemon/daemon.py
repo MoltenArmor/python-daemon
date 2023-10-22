@@ -878,7 +878,7 @@ def _validate_fd_values(fds):
         """
     invalid_fds = set(filter((lambda fd: not isinstance(fd, int)), fds))
     if invalid_fds:
-        value_to_complain_about = next(invalid_fds)
+        value_to_complain_about = next(iter(invalid_fds))
         message = "not an integer file descriptor: {!r}".format(
                 value_to_complain_about)
         raise TypeError(message)

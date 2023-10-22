@@ -19,6 +19,7 @@ import socket
 import sys
 import tempfile
 from types import ModuleType
+import unittest
 import unittest.mock
 import warnings
 
@@ -1602,6 +1603,7 @@ class _get_candidate_file_descriptor_ranges_ErrorTestCase(
                     'exclude': {4, "b0gUs", 7},
                 },
                 'expected_error_type': TypeError,
+                'expected_error_message_substring': ": 'b0gUs'",
                 }),
             ('exclude-set-includes-float', {
                 'fake_maxfd': 5,
@@ -1609,6 +1611,7 @@ class _get_candidate_file_descriptor_ranges_ErrorTestCase(
                     'exclude': {4, 5.2, 7},
                 },
                 'expected_error_type': TypeError,
+                'expected_error_message_substring': ": 5.2",
                 }),
             ('exclude-set-includes-float-nan', {
                 'fake_maxfd': 5,
@@ -1616,6 +1619,7 @@ class _get_candidate_file_descriptor_ranges_ErrorTestCase(
                     'exclude': {4, float('nan'), 7},
                 },
                 'expected_error_type': TypeError,
+                'expected_error_message_substring': ": nan",
                 }),
             ('exclude-set-includes-none', {
                 'fake_maxfd': 5,
@@ -1623,15 +1627,19 @@ class _get_candidate_file_descriptor_ranges_ErrorTestCase(
                     'exclude': {4, None, 7},
                 },
                 'expected_error_type': TypeError,
+                'expected_error_message_substring': ": None",
                 }),
             ]
 
     def test_raises_expected_error(self):
         """ Should raise the expected error type for the condition. """
-        self.assertRaises(
-            self.expected_error_type,
-            daemon.daemon._get_candidate_file_descriptor_ranges,
-            **self.test_kwargs)
+        with unittest.TestCase.assertRaises(
+                self, self.expected_error_type,
+        ) as exc_cm:
+            daemon.daemon._get_candidate_file_descriptor_ranges(
+                    **self.test_kwargs)
+        self.assertIn(
+                self.expected_error_message_substring, str(exc_cm.exception))
 
 
 @unittest.mock.patch.object(os, "closerange")
