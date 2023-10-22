@@ -23,6 +23,13 @@ Bugs Fixed:
 
   Closes: Pagure #73. Thanks to Michał Górny for the report.
 
+Changed:
+
+* Clarify copyright and grants of license.
+
+  The new file `COPYING` now comprehensively describes grants of license to all
+  parts of this distribution.
+
 Removed:
 
 * Remove dynamically-constructed non-standard metadata attributes.
