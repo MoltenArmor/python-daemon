@@ -14,7 +14,7 @@ author_name = "Ben Finney"
 author_email = "ben+python@benfinney.id.au"
 author = "{name} <{email}>".format(name=author_name, email=author_email)
 
-license = "Apache-2"
+license = "Apache-2, GPL-3+"
 url = "https://pagure.io/python-daemon/"
 
 
