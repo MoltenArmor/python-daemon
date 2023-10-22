@@ -22,7 +22,7 @@ TEST_COVERAGE_RUN_OPTS ?= --branch \
 TEST_COVERAGE_REPORT_OPTS ?=
 TEST_COVERAGE_HTML_OPTS ?= --directory ${coverage_html_report_dir}/
 
-TEST_ISORT_OPTS ?=
+TEST_ISORT_OPTS ?= --check-only --diff
 
 TEST_FLAKE8_OPTS ?=
 
