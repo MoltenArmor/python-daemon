@@ -100,7 +100,7 @@ setup_kwargs = dict(
 setup_kwargs['install_requires'].append("docutils")
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':  # pragma: nocover
     setup(**setup_kwargs)
 
 
