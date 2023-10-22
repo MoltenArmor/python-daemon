@@ -180,6 +180,9 @@ build-backend = "setuptools.build_meta"
 # Can the project be safely installed and run from a zip file?
 zip-safe = false
 
+# Matching glob patterns for files containing full text of license conditions.
+license-files = ["LICENSE.*"]
+
 [tool.setuptools.packages.find]
 
 # Folders that contain the packages (default: ["."])
