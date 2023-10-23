@@ -30,6 +30,14 @@ Changed:
   The new file `COPYING` now comprehensively describes grants of license to all
   parts of this distribution.
 
+* Migrate to PEP 517 simple build system for Python distribution.
+
+  This makes it easier to de-couple from Setuptools-specific declarations; we
+  stop using the deprecated command-line invocations of ‘setup.py’ as a
+  program.
+
+  Closes: Pagure #87. Thanks to Attila Lendvai for the report.
+
 Removed:
 
 * Remove dynamically-constructed non-standard metadata attributes.

@@ -1,30 +1,29 @@
-# setuptools.mk
+# packaging.mk
 # Part of ‘python-daemon’, an implementation of PEP 3143.
 #
 # This is free software, and you are welcome to redistribute it under
 # certain conditions; see the end of this file for copyright
 # information, grant of license, and disclaimer of warranty.
 
-# Makefile rules for Python Setuptools.
+# Makefile rules for Python packaging.
 
 MODULE_DIR := $(CURDIR)
 
 DESTDIR ?=
 PREFIX ?= /usr
 
-PYTHON2 ?= python2
 PYTHON3 ?= python3
 PYTHON ?= ${PYTHON3}
 
-SETUP_MODULE = setup
-PYTHON_SETUP := $(PYTHON) -m ${SETUP_MODULE}
-PYTHON_SETUP_MODULE_FILE := $(CURDIR)/${SETUP_MODULE}.py
+PACKAGING_BUILD_MODULE = build
+PACKAGING_BUILD := $(PYTHON) -m ${PACKAGING_BUILD_MODULE}
 
-CODE_MODULES += ${PYTHON_SETUP_MODULE_FILE}
+SETUPTOOLS_CONFIG_MODULE = setup
+PACKAGING_SETUP_MODULE_FILE := $(CURDIR)/${SETUPTOOLS_CONFIG_MODULE}.py
 
-PYTHON_SETUP_INSTALL_OPTS ?= --root=${DESTDIR} --prefix=${PREFIX}
+PIP_DEVEL_DEPENDENCIES = .[devel]
 
-PYTHON_BDIST_TARGETS := bdist_wheel
+CODE_MODULES += ${PACKAGING_SETUP_MODULE_FILE}
 
 GENERATED_FILES += $(CURDIR)/*.egg-info
 GENERATED_FILES += $(CURDIR)/.eggs/
@@ -44,33 +43,38 @@ GENERATED_FILES += $(shell find $(CURDIR) \
 		-not -path '*/.eggs/*' \
 	\) )
 
-VCS_INVENTORY ?= git ls-files
+
+.PHONY: pip-confirm-devel-dependencies-installed
+pip-confirm-devel-dependencies-installed:
+	$(PYTHON) -m pip install \
+		--dry-run --no-input \
+		--no-index --no-build-isolation \
+		${PIP_DEVEL_DEPENDENCIES}
+
+.PHONY: pip-install-devel-requirements
+pip-install-devel-requirements:
+	$(PYTHON) -m pip install --no-input ${PIP_DEVEL_DEPENDENCIES}
 
 
-.PHONY: setuptools-build
-setuptools-build:
-	$(PYTHON_SETUP) build
+.PHONY: packaging-build
+packaging-build:
+	$(PACKAGING_BUILD) build
 
-.PHONY: setuptools-install
-setuptools-install:
-	$(PYTHON_SETUP) install ${PYTHON_SETUP_INSTALL_OPTS}
-
-
-.PHONY: setuptools-dist
-setuptools-dist: setuptools-sdist setuptools-bdist
-
-.PHONY: setuptools-bdist
-setuptools-bdist:
-	$(PYTHON_SETUP) ${PYTHON_BDIST_TARGETS}
-
-.PHONY: setuptools-sdist
-setuptools-sdist:
-	$(PYTHON_SETUP) sdist
+.PHONY: packaging-install
+packaging-install:
+	$(PACKAGING_BUILD) install ${PACKAGING_INSTALL_OPTS}
 
 
-.PHONY: setuptools-clean
-setuptools-clean:
-	$(PYTHON_SETUP) clean
+.PHONY: packaging-dist
+packaging-dist: packaging-sdist packaging-bdist
+
+.PHONY: packaging-bdist
+packaging-bdist:
+	$(PACKAGING_BUILD) --wheel
+
+.PHONY: packaging-sdist
+packaging-sdist:
+	$(PACKAGING_BUILD) --sdist
 
 
 # Copyright © 2006–2023 Ben Finney <ben+python@benfinney.id.au>
