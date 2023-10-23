@@ -65,7 +65,7 @@ bdist: packaging-bdist
 sdist: packaging-sdist
 
 .PHONY: dist
-dist: sdist
+dist: sdist bdist
 
 
 include test.mk
