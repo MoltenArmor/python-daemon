@@ -7,8 +7,7 @@ include pyproject.toml
 include LICENSE.*
 include ChangeLog
 recursive-include doc *
-include version.py
-include test_version.py
+recursive-include util *.py
 recursive-include test *.py
 
 
