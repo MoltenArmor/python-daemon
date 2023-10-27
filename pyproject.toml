@@ -52,6 +52,14 @@ dynamic = [
 
 [project.optional-dependencies]
 
+doc = [
+
+    # Python documentation generator.
+    # Documentation: <URL:http://www.sphinx-doc.org/>.
+    "Sphinx ~= 4.4",
+
+    ]
+
 static-analysis = [
 
     # Pip version inspector that reports PyPI available updates.
@@ -78,6 +86,8 @@ static-analysis = [
 
 build = [
 
+    "python-daemon[doc]",
+
     # Reference implementation of Python wheel packaging standard (PEP 427).
     # Documentation: <URL:https://wheel.readthedocs.io/>.
     "wheel",
@@ -85,10 +95,6 @@ build = [
     # A simple, correct (defined by PEP 517) Python build frontend.
     # Documentation: <URL:https://build.pypa.io/>.
     "build",
-
-    # Python documentation generator.
-    # Documentation: <URL:https://www.sphinx-doc.org/>.
-    "sphinx",
 
     # Python Documentation Utilities.
     # Documentation: <URL:https://docutils.sourceforge.io/docs/>.
