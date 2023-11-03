@@ -4,7 +4,6 @@
 
 include LICENSE.*
 include ChangeLog
-recursive-include doc *
 recursive-include util *.py
 recursive-include test *.py
 
