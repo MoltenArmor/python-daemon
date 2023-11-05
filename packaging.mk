@@ -51,8 +51,8 @@ pip-confirm-devel-dependencies-installed:
 		--no-index --no-build-isolation \
 		${PIP_DEVEL_DEPENDENCIES}
 
-.PHONY: pip-install-devel-requirements
-pip-install-devel-requirements:
+.PHONY: pip-install-devel-dependencies
+pip-install-devel-dependencies:
 	$(PYTHON) -m pip install --no-input ${PIP_DEVEL_DEPENDENCIES}
 
 
