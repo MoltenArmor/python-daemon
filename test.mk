@@ -41,10 +41,6 @@ test: test-unittest
 test-unittest: pip-confirm-test-dependencies-installed
 	$(PYTHON) -m unittest ${TEST_UNITTEST_OPTS} ${TEST_UNITTEST_NAMES}
 
-.PHONY: pip-install-test-requirements
-pip-install-test-requirements:
-	$(PYTHON) -m pip install .[test]
-
 
 .PHONY: test-coverage
 test-coverage: test-coverage-run test-coverage-html test-coverage-report

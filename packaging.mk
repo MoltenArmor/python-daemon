@@ -64,6 +64,10 @@ pip-confirm-test-dependencies-installed:
 		--no-index --no-build-isolation \
 		${PIP_TEST_DEPENDENCIES}
 
+.PHONY: pip-install-test-dependencies
+pip-install-test-dependencies:
+	$(PYTHON) -m pip install --no-input ${PIP_TEST_DEPENDENCIES}
+
 
 .PHONY: packaging-build
 packaging-build:
