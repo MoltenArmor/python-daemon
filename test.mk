@@ -36,8 +36,9 @@ TEST_PYMCCABE_OPTS ?= --min ${TEST_PYMCCABE_MIN}
 test: test-pycodestyle
 test: test-unittest
 
+
 .PHONY: test-unittest
-test-unittest: pip-install-test-requirements
+test-unittest: pip-confirm-test-dependencies-installed
 	$(PYTHON) -m unittest ${TEST_UNITTEST_OPTS} ${TEST_UNITTEST_NAMES}
 
 .PHONY: pip-install-test-requirements
@@ -49,7 +50,7 @@ pip-install-test-requirements:
 test-coverage: test-coverage-run test-coverage-html test-coverage-report
 
 .PHONY: test-coverage-run
-test-coverage-run: pip-install-test-requirements
+test-coverage-run: pip-confirm-test-dependencies-installed
 test-coverage-run: .coverage
 
 .coverage: ${CODE_MODULES}
