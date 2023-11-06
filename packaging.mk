@@ -73,10 +73,6 @@ pip-install-test-dependencies:
 packaging-build:
 	$(PACKAGING_BUILD) build
 
-.PHONY: packaging-install
-packaging-install:
-	$(PACKAGING_BUILD) install ${PACKAGING_INSTALL_OPTS}
-
 
 .PHONY: packaging-dist
 packaging-dist: packaging-sdist packaging-bdist
