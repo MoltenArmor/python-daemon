@@ -26,7 +26,18 @@ CODE_MODULES += ${PACKAGING_SETUP_MODULE_FILE}
 
 PIP_INSTALL_OPTS ?= --no-input
 PIP_TEST_DEPENDENCIES = .[test]
+PIP_TEST_DEPENDENCIES_EXPLICIT = \
+	lockfile \
+	coverage testscenarios testtools
 PIP_DEVEL_DEPENDENCIES = .[devel]
+PIP_DEVEL_DEPENDENCIES_EXPLICIT = \
+	${PIP_TEST_DEPENDENCIES_EXPLICIT} \
+	sphinx docutils packaging setuptools wheel
+
+installed_packages = $(shell \
+	$(PYTHON) -m pip list \
+		| tail --lines +2 \
+		| cut -d ' ' -f 1)
 
 GENERATED_FILES += $(CURDIR)/*.egg-info
 GENERATED_FILES += $(CURDIR)/.eggs/
@@ -47,13 +58,21 @@ GENERATED_FILES += $(shell find $(CURDIR) \
 	\) )
 
 
+define exit_with_error_if_packages_not_installed =
+	not_installed_packages="$(strip \
+		$(filter-out ${installed_packages},${1}))" ; \
+	if [[ -n "$${not_installed_packages}" ]] ; then \
+		echo "Dependency packages not installed:" \
+			"$${not_installed_packages}" ; \
+		/bin/false ; \
+	fi
+endef
+
+
 .PHONY: pip-confirm-devel-dependencies-installed
 pip-confirm-devel-dependencies-installed:
-	$(PYTHON) -m pip install \
-		${PIP_INSTALL_OPTS} \
-		--dry-run \
-		--no-index --no-build-isolation \
-		${PIP_DEVEL_DEPENDENCIES}
+	@$(call exit_with_error_if_packages_not_installed, \
+		${PIP_DEVEL_DEPENDENCIES_EXPLICIT})
 
 .PHONY: pip-install-devel-dependencies
 pip-install-devel-dependencies:
@@ -64,11 +83,8 @@ pip-install-devel-dependencies:
 
 .PHONY: pip-confirm-test-dependencies-installed
 pip-confirm-test-dependencies-installed:
-	$(PYTHON) -m pip install \
-		${PIP_INSTALL_OPTS} \
-		--dry-run \
-		--no-index --no-build-isolation \
-		${PIP_TEST_DEPENDENCIES}
+	@$(call exit_with_error_if_packages_not_installed, \
+		${PIP_TEST_DEPENDENCIES_EXPLICIT})
 
 .PHONY: pip-install-test-dependencies
 pip-install-test-dependencies:
