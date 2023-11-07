@@ -17,6 +17,7 @@ PYTHON ?= ${PYTHON3}
 
 PACKAGING_BUILD_MODULE = build
 PACKAGING_BUILD := $(PYTHON) -m ${PACKAGING_BUILD_MODULE}
+PACKAGING_BUILD_OPTS ?=
 
 SETUPTOOLS_CONFIG_MODULE = setup
 PACKAGING_SETUP_MODULE_FILE := $(CURDIR)/${SETUPTOOLS_CONFIG_MODULE}.py
@@ -79,11 +80,11 @@ packaging-dist:
 
 .PHONY: packaging-bdist
 packaging-bdist:
-	$(PACKAGING_BUILD) --wheel
+	$(PACKAGING_BUILD) ${PACKAGING_BUILD_OPTS} --wheel
 
 .PHONY: packaging-sdist
 packaging-sdist:
-	$(PACKAGING_BUILD) --sdist
+	$(PACKAGING_BUILD) ${PACKAGING_BUILD_OPTS} --sdist
 
 
 # Copyright © 2006–2023 Ben Finney <ben+python@benfinney.id.au>
