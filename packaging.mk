@@ -70,8 +70,7 @@ pip-install-test-dependencies:
 
 
 .PHONY: packaging-build
-packaging-build:
-	$(PACKAGING_BUILD) build
+packaging-build: packaging-dist
 
 
 .PHONY: packaging-dist
