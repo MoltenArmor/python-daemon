@@ -15,7 +15,8 @@ include ${MODULE_DIR}/sphinx.mk
 .PHONY: doc
 doc: sphinx-dirhtml
 
-build: doc
+# TODO
+# build: doc
 
 
 # Copyright © 2006–2023 Ben Finney <ben+python@benfinney.id.au>
