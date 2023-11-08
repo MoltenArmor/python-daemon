@@ -74,7 +74,8 @@ packaging-build: packaging-dist
 
 
 .PHONY: packaging-dist
-packaging-dist: packaging-sdist packaging-bdist
+packaging-dist:
+	$(PACKAGING_BUILD) ${PACKAGING_BUILD_OPTS} --sdist --wheel
 
 .PHONY: packaging-bdist
 packaging-bdist:
