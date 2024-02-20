@@ -24,6 +24,7 @@ PACKAGING_SETUP_MODULE_FILE := $(CURDIR)/${SETUPTOOLS_CONFIG_MODULE}.py
 
 CODE_MODULES += ${PACKAGING_SETUP_MODULE_FILE}
 
+PIP_INSTALL_OPTS ?= --no-input
 PIP_TEST_DEPENDENCIES = .[test]
 PIP_DEVEL_DEPENDENCIES = .[devel]
 
@@ -49,25 +50,31 @@ GENERATED_FILES += $(shell find $(CURDIR) \
 .PHONY: pip-confirm-devel-dependencies-installed
 pip-confirm-devel-dependencies-installed:
 	$(PYTHON) -m pip install \
-		--dry-run --no-input \
+		${PIP_INSTALL_OPTS} \
+		--dry-run \
 		--no-index --no-build-isolation \
 		${PIP_DEVEL_DEPENDENCIES}
 
 .PHONY: pip-install-devel-dependencies
 pip-install-devel-dependencies:
-	$(PYTHON) -m pip install --no-input ${PIP_DEVEL_DEPENDENCIES}
+	$(PYTHON) -m pip install \
+		${PIP_INSTALL_OPTS} \
+		${PIP_DEVEL_DEPENDENCIES}
 
 
 .PHONY: pip-confirm-test-dependencies-installed
 pip-confirm-test-dependencies-installed:
 	$(PYTHON) -m pip install \
-		--dry-run --no-input \
+		${PIP_INSTALL_OPTS} \
+		--dry-run \
 		--no-index --no-build-isolation \
 		${PIP_TEST_DEPENDENCIES}
 
 .PHONY: pip-install-test-dependencies
 pip-install-test-dependencies:
-	$(PYTHON) -m pip install --no-input ${PIP_TEST_DEPENDENCIES}
+	$(PYTHON) -m pip install \
+		${PIP_INSTALL_OPTS} \
+		${PIP_TEST_DEPENDENCIES}
 
 
 .PHONY: packaging-build
