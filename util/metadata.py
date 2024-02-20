@@ -74,7 +74,7 @@ def synopsis_and_description_from_docstring(docstring):
     return (synopsis, long_description)
 
 
-# Copyright © 2008–2023 Ben Finney <ben+python@benfinney.id.au>
+# Copyright © 2008–2024 Ben Finney <ben+python@benfinney.id.au>
 #
 # This is free software: you may copy, modify, and/or distribute this work
 # under the terms of the GNU General Public License as published by the

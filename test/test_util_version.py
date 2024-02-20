@@ -996,7 +996,7 @@ class serialise_version_info_from_mapping_TestCase(
         self.assertEqual(self.expected_value, value)
 
 
-# Copyright © 2008–2023 Ben Finney <ben+python@benfinney.id.au>
+# Copyright © 2008–2024 Ben Finney <ben+python@benfinney.id.au>
 #
 # This is free software: you may copy, modify, and/or distribute this work
 # under the terms of the GNU General Public License as published by the

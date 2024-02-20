@@ -87,7 +87,7 @@ packaging-sdist:
 	$(PACKAGING_BUILD) ${PACKAGING_BUILD_OPTS} --sdist
 
 
-# Copyright © 2006–2023 Ben Finney <ben+python@benfinney.id.au>
+# Copyright © 2006–2024 Ben Finney <ben+python@benfinney.id.au>
 #
 # This is free software: you may copy, modify, and/or distribute this work
 # under the terms of the GNU General Public License as published by the
