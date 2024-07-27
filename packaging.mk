@@ -34,10 +34,13 @@ PIP_BUILD_DEPENDENCIES_EXPLICIT = \
 	${PIP_TEST_DEPENDENCIES_EXPLICIT} \
 	Sphinx docutils \
 	packaging setuptools wheel build
-PIP_DEVEL_DEPENDENCIES = .[devel]
-PIP_DEVEL_DEPENDENCIES_EXPLICIT = \
+PIP_DIST_DEPENDENCIES = .[dist]
+PIP_DIST_DEPENDENCIES_EXPLICIT = \
 	${PIP_BUILD_DEPENDENCIES_EXPLICIT} \
 	twine
+PIP_DEVEL_DEPENDENCIES = .[devel]
+PIP_DEVEL_DEPENDENCIES_EXPLICIT = \
+	${PIP_DIST_DEPENDENCIES_EXPLICIT} \
 
 installed_packages = $(shell \
 	$(PYTHON) -m pip list \
@@ -110,12 +113,24 @@ pip-install-build-dependencies:
 		${PIP_BUILD_DEPENDENCIES}
 
 
+.PHONY: pip-confirm-dist-dependencies-installed
+pip-confirm-dist-dependencies-installed:
+	@$(call exit_with_error_if_packages_not_installed, \
+		${PIP_DIST_DEPENDENCIES_EXPLICIT})
+
+.PHONY: pip-install-dist-dependencies
+pip-install-dist-dependencies:
+	$(PYTHON) -m pip install \
+		${PIP_INSTALL_OPTS} \
+		${PIP_DIST_DEPENDENCIES}
+
+
 .PHONY: packaging-build
 packaging-build: packaging-dist
 
 
 .PHONY: packaging-dist
-packaging-dist: pip-confirm-build-dependencies-installed
+packaging-dist: pip-confirm-dist-dependencies-installed
 packaging-dist: PACKAGING_BUILD_OPTS = --no-isolation
 packaging-dist:
 	$(PACKAGING_BUILD) ${PACKAGING_BUILD_OPTS} --sdist --wheel

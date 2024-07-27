@@ -18,13 +18,13 @@ TWINE_DIST_FILES ?= ${DIST_DIR}/*
 
 
 .PHONY: twine-upload
-twine-upload: pip-confirm-devel-dependencies-installed
+twine-upload: pip-confirm-dist-dependencies-installed
 twine-upload: packaging-dist
 	$(PYTHON_TWINE) upload ${PYTHON_TWINE_UPLOAD_OPTS} ${TWINE_DIST_FILES}
 
 
 .PHONY: twine-check
-twine-check: pip-confirm-devel-dependencies-installed
+twine-check: pip-confirm-dist-dependencies-installed
 twine-check: packaging-dist
 	$(PYTHON_TWINE) check ${TWINE_DIST_FILES}
 

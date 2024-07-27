@@ -42,10 +42,13 @@ build_requirements = [
         "sphinx",
         ] + test_requirements
 
-devel_requirements = [
-        "isort",
+dist_requirements = [
         "twine",
         ] + build_requirements
+
+devel_requirements = [
+        "isort",
+        ] + dist_requirements
 
 
 setup_kwargs = dict(
@@ -75,6 +78,7 @@ setup_kwargs = dict(
         extras_require={
             'test': test_requirements,
             'build': build_requirements,
+            'dist': dist_requirements,
             'devel': devel_requirements,
             },
 
