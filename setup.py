@@ -36,10 +36,16 @@ test_requirements = [
         "docutils",
         ]
 
+build_requirements = [
+        "wheel",
+        "build",
+        "sphinx",
+        ] + test_requirements
+
 devel_requirements = [
         "isort",
         "twine",
-        ] + test_requirements
+        ] + build_requirements
 
 
 setup_kwargs = dict(
@@ -68,6 +74,7 @@ setup_kwargs = dict(
         python_requires=">=3",
         extras_require={
             'test': test_requirements,
+            'build': build_requirements,
             'devel': devel_requirements,
             },
 
