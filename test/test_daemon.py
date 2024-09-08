@@ -516,8 +516,9 @@ class DaemonContext_open_TestCase(DaemonContext_BaseTestCase):
                 test_uid, test_gid, test_initgroups)
 
     def test_detaches_process_context(self):
-        """ Should request detach of process context. """
+        """ Should request detach of process context when specified. """
         instance = self.test_instance
+        instance.detach_process = True
         instance.open()
         self.mock_module_daemon.detach_process_context.assert_called_with()
 

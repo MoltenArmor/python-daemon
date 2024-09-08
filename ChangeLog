@@ -14,9 +14,14 @@ Version NEXT
 :Released: FUTURE
 :Maintainer: UNKNOWN <unknown@example.org>
 
-Changes:
+Bugs Fixed:
 
-* None.
+* Correct a non-deterministic test case that would sometimes fail.
+
+  Because of test data that was incorrectly choosing a random value for the
+  property being tested, the test case would succeed or fail unreliably.
+
+  Closes: Pagure #96. Thanks to Joseph Tate for the report and implementation.
 
 
 Version 3.0.2
