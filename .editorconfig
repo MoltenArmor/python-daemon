@@ -15,13 +15,13 @@ charset = utf-8
 # Character to use for indentation (“tab” for U+0009, “space” for U+0020).
 indent_style = space
 
-# How many columns (integer) for each indentation level.
+# Number of columns (integer) for each indentation level.
 indent_size = 4
 
-# How many columns (integer) to represent a U+0009 TAB.
+# Number of columns (integer) for display width of U+0009 TAB character.
 tab_width = 8
 
-# How many characters (integer) before enforcing line wrap.
+# How many characters (integer, or “off”) before enforcing line wrap.
 max_line_length = 79
 
 # Remove trailing whitespace on each line?
