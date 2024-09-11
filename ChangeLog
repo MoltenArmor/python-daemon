@@ -23,6 +23,13 @@ Bugs Fixed:
 
   Closes: Pagure #96. Thanks to Joseph Tate for the report and implementation.
 
+* Increase minimum Python version required, to “>= 3.7”.
+
+  The interface `setuptools.command.build`, introduced in Setuptools version
+  “62.4.0”, requires Python version >= 3.7.
+
+  Closes: Pagure #79. Thanks to Edison Wong for the report and implementation.
+
 
 Version 3.0.2
 =============
