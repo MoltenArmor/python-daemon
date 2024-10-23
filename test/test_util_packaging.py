@@ -167,7 +167,26 @@ class derive_dist_description_TestCase(
                     sem laoreet, at tincidunt velit venenatis."""),
                 'expected_long_description_content_type': "text/x-rst",
                 }),
-            ('content-type-specified', {
+            ('content-type-rest', {
+                'test_args': {
+                    'distribution': setuptools.dist.Distribution(),
+                    'content_type': "text/x-rst",
+                    },
+                'test_docstring': textwrap.dedent("""\
+                    Lorem ipsum, dolor sit amet.
+
+                    Donec et semper sapien, et faucibus felis. Nunc suscipit
+                    quam id lectus imperdiet varius. Praesent mattis arcu in
+                    sem laoreet, at tincidunt velit venenatis.
+                    """),
+                'expected_synopsis': "Lorem ipsum, dolor sit amet.",
+                'expected_long_description': textwrap.dedent("""\
+                    Donec et semper sapien, et faucibus felis. Nunc suscipit
+                    quam id lectus imperdiet varius. Praesent mattis arcu in
+                    sem laoreet, at tincidunt velit venenatis."""),
+                'expected_long_description_content_type': "text/x-rst",
+                }),
+            ('content-type-markdown', {
                 'test_args': {
                     'distribution': setuptools.dist.Distribution(),
                     'content_type': "text/markdown",

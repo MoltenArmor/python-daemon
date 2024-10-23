@@ -25,9 +25,9 @@ import setuptools.command.egg_info
 import setuptools.dist
 
 from .metadata import (
+    description_fields_from_docstring,
     docstring_from_object,
     parse_person_field,
-    synopsis_and_description_from_docstring,
 )
 from .version import generate_version_info_from_changelog
 
@@ -91,11 +91,13 @@ def derive_dist_description(
         """
     main_module = main_module_by_name('daemon')
     main_module_docstring = docstring_from_object(main_module)
-    (synopsis, long_description) = synopsis_and_description_from_docstring(
-        main_module_docstring)
-    distribution.metadata.description = synopsis
-    distribution.metadata.long_description = long_description
-    distribution.metadata.long_description_content_type = content_type
+    description_fields = description_fields_from_docstring(
+        main_module_docstring,
+        content_type=content_type,
+    )
+    distribution.metadata.description = description_fields.synopsis
+    distribution.metadata.long_description = description_fields.long_description
+    distribution.metadata.long_description_content_type = description_fields.content_type
 
 
 def derive_version(distribution):
