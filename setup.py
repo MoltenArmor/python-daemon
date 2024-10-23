@@ -22,6 +22,7 @@ from setuptools import (
 # instead add its directory to the import path.
 package_root_dir = pathlib.Path(__file__).parent
 sys.path.insert(0, str(package_root_dir))
+import util.metadata  # noqa: E402
 import util.packaging  # noqa: E402
 
 
@@ -29,12 +30,22 @@ main_module = util.packaging.main_module_by_name(
         'daemon', fromlist=['_metadata'])
 metadata = main_module._metadata
 
+changelog_infile_path = package_root_dir.joinpath("ChangeLog")
+latest_changelog_entry = util.metadata.get_latest_changelog_entry(
+    changelog_infile_path)
+(maintainer_name, maintainer_email) = util.metadata.parse_person_field(
+    latest_changelog_entry.maintainer)
+
+description_fields = util.metadata.description_fields_from_docstring(
+    util.metadata.docstring_from_object(main_module))
+
 
 test_requirements = [
         "testtools",
         "testscenarios >=0.4",
         "coverage",
         "docutils",
+        "changelog-chug",
         ]
 
 build_requirements = [
@@ -54,25 +65,14 @@ devel_requirements = [
 
 setup_kwargs = dict(
         name=metadata.distribution_name,
+        version=latest_changelog_entry.version,
         packages=find_packages(exclude=["test", "util"]),
-        entry_points={
-            "setuptools.finalize_distribution_options": [
-                "description_fields = util.packaging:derive_dist_description",
-                "version = util.packaging:derive_version",
-                "maintainer = util.packaging:derive_maintainer",
-                ],
-            },
 
         # Setuptools metadata.
         zip_safe=False,
-        setup_requires=[
-            "docutils",
-            "packaging",
-            "setuptools",
-            ],
+        setup_requires=build_requirements,
         install_requires=[
             "setuptools >=62.4.0",
-            "packaging",
             "lockfile >=0.10",
             ],
         python_requires=">=3.7",
@@ -84,8 +84,13 @@ setup_kwargs = dict(
             },
 
         # PyPI metadata.
+        description=description_fields.synopsis,
+        long_description=description_fields.long_description,
+        long_description_content_type=description_fields.content_type,
         author=metadata.author_name,
         author_email=metadata.author_email,
+        maintainer=maintainer_name,
+        maintainer_email=maintainer_email,
         license=metadata.license,
         keywords="daemon fork unix".split(),
         classifiers=[

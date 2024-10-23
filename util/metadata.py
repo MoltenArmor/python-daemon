@@ -16,6 +16,8 @@ import inspect
 import pydoc
 import re
 
+import chug.parsers.rest
+
 
 rfc822_person_regex = re.compile(
         r"^(?P<name>[^<]+) <(?P<email>[^>]+)>$")
@@ -56,6 +58,41 @@ def docstring_from_object(object):
     return docstring
 
 
+DescriptionMetadata = collections.namedtuple(
+    'DescriptionMetadata',
+    ['synopsis', 'long_description', 'content_type'])
+
+
+def description_fields_from_docstring(
+        docstring,
+        *,
+        content_type="text/plain"
+):
+    """ Parse metadata description fields, from `docstring`.
+
+        :param docstring: The documentation string (“docstring”, text) to
+            parse.
+        :param content_type: The MIME Content-Type value to describe the
+            content of the long description.
+        :return: A `DescriptionMetadata` instance representing the information
+            parsed from `docstring`.
+
+        The `docstring` is expected to be a document of the form described in
+        :PEP:`257`:
+
+        > Multi-line docstrings consist of a summary line just like a one-line
+        > docstring, followed by a blank line, followed by a more elaborate
+        > description.
+        """
+    (synopsis, long_description) = pydoc.splitdoc(docstring)
+    metadata = DescriptionMetadata(
+        synopsis=synopsis,
+        long_description=long_description,
+        content_type=content_type,
+    )
+    return metadata
+
+
 def synopsis_and_description_from_docstring(docstring):
     """ Parse one-line synopsis and long description, from `docstring`.
 
@@ -72,6 +109,21 @@ def synopsis_and_description_from_docstring(docstring):
         """
     (synopsis, long_description) = pydoc.splitdoc(docstring)
     return (synopsis, long_description)
+
+
+def get_latest_changelog_entry(infile_path):
+    """ Get the latest entry data from the changelog at `infile_path`.
+
+        :param infile_path: The filesystem path (text) from which to read the
+            change log document.
+        :return: The most recent change log entry, as a `chug.ChangeLogEntry`.
+        """
+    document_text = chug.parsers.get_changelog_document_text(infile_path)
+    document = chug.parsers.rest.parse_rest_document_from_text(document_text)
+    entries = chug.parsers.rest.make_change_log_entries_from_document(
+        document)
+    latest_entry = entries[0]
+    return latest_entry
 
 
 # Copyright © 2008–2024 Ben Finney <ben+python@benfinney.id.au>

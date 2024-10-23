@@ -30,6 +30,12 @@ Bugs Fixed:
 
   Closes: Pagure #79. Thanks to Edison Wong for the report and implementation.
 
+* Get metadata from Change Log at build time only.
+
+  This removes the need for Setuptools “entry points” feature at build time.
+
+  Closes: Pagure #94. Thanks to Branch Vincent for assistance.
+
 
 Version 3.0.2
 =============
