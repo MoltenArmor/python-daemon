@@ -7,12 +7,14 @@
 
 """ Scaffolding for unit test modules. """
 
+import builtins
 from copy import deepcopy
 import doctest
 import functools
 import logging
 import operator
 import textwrap
+import unittest.mock
 
 import testscenarios
 import testtools.testcase
@@ -275,6 +277,40 @@ def make_exception_scenarios(scenarios):
         scenario['instance'] = instance
 
     return updated_scenarios
+
+
+def mock_builtin_open_for_fake_files(testcase, *, fake_file_content_by_path):
+    """ Mock builtin `open` during `testcase`, for specific fake files.
+
+        :param testcase: The test case during which to mock `open`.
+        :param fake_file_content_by_path: Mapping of
+            `{file_path: fake_file_content}`.
+
+        Create fake files (`io.StringIO`) containing each `fake_file_content`.
+        Wrap the `builtins.open` function such that, for the specified
+        `file_path` only, a specific mock `open` function will be called,
+        that returns the corresponding fake file; for any unspecified path,
+        the original `builtins.open` will be called as normal.
+        """
+    testcase.mock_open_by_path = {
+        file_path: unittest.mock.mock_open(read_data=fake_file_content)
+        for (file_path, fake_file_content)
+        in fake_file_content_by_path.items()}
+
+    open_orig = builtins.open
+
+    def fake_open(file, *args, **kwargs):
+        """ Wrapper for builtin `open`, faking for specific paths. """
+        open_func = (
+            testcase.mock_open_by_path[file]
+            if file in testcase.mock_open_by_path
+            else open_orig)
+        return open_func(file, *args, **kwargs)
+
+    testcase.open_patcher = unittest.mock.patch.object(
+        builtins, 'open', side_effect=fake_open)
+    testcase.open_patcher.start()
+    testcase.addCleanup(testcase.open_patcher.stop)
 
 
 # Copyright © 2007–2024 Ben Finney <ben+python@benfinney.id.au>
