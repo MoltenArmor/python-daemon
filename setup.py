@@ -36,6 +36,9 @@ latest_changelog_entry = util.metadata.get_latest_changelog_entry(
 (maintainer_name, maintainer_email) = util.metadata.parse_person_field(
     latest_changelog_entry.maintainer)
 
+description_fields = util.metadata.description_fields_from_docstring(
+    util.metadata.docstring_from_object(main_module))
+
 
 test_requirements = [
         "testtools",
@@ -64,11 +67,6 @@ setup_kwargs = dict(
         name=metadata.distribution_name,
         version=latest_changelog_entry.version,
         packages=find_packages(exclude=["test", "util"]),
-        entry_points={
-            "setuptools.finalize_distribution_options": [
-                "description_fields = util.packaging:derive_dist_description",
-                ],
-            },
 
         # Setuptools metadata.
         zip_safe=False,
@@ -87,6 +85,9 @@ setup_kwargs = dict(
             },
 
         # PyPI metadata.
+        description=description_fields.synopsis,
+        long_description=description_fields.long_description,
+        long_description_content_type=description_fields.content_type,
         author=metadata.author_name,
         author_email=metadata.author_email,
         maintainer=maintainer_name,
