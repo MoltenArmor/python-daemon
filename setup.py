@@ -65,11 +65,7 @@ setup_kwargs = dict(
 
         # Setuptools metadata.
         zip_safe=False,
-        setup_requires=[
-            "docutils",
-            "packaging",
-            "setuptools",
-            ],
+        setup_requires=build_requirements,
         install_requires=[
             "setuptools >=62.4.0",
             "packaging",
