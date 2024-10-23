@@ -22,6 +22,7 @@ from setuptools import (
 # instead add its directory to the import path.
 package_root_dir = pathlib.Path(__file__).parent
 sys.path.insert(0, str(package_root_dir))
+import util.metadata  # noqa: E402
 import util.packaging  # noqa: E402
 
 
@@ -32,6 +33,8 @@ metadata = main_module._metadata
 changelog_infile_path = package_root_dir.joinpath("ChangeLog")
 latest_changelog_entry = util.metadata.get_latest_changelog_entry(
     changelog_infile_path)
+(maintainer_name, maintainer_email) = util.metadata.parse_person_field(
+    latest_changelog_entry.maintainer)
 
 
 test_requirements = [
@@ -64,7 +67,6 @@ setup_kwargs = dict(
         entry_points={
             "setuptools.finalize_distribution_options": [
                 "description_fields = util.packaging:derive_dist_description",
-                "maintainer = util.packaging:derive_maintainer",
                 ],
             },
 
@@ -87,6 +89,8 @@ setup_kwargs = dict(
         # PyPI metadata.
         author=metadata.author_name,
         author_email=metadata.author_email,
+        maintainer=maintainer_name,
+        maintainer_email=maintainer_email,
         license=metadata.license,
         keywords="daemon fork unix".split(),
         classifiers=[
