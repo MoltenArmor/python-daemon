@@ -10,7 +10,7 @@
 
 """ Distribution setup for ‘python-daemon’ library. """
 
-import os.path
+import pathlib
 import sys
 
 from setuptools import (
@@ -20,7 +20,8 @@ from setuptools import (
 
 # This module is not inside a package, so we can't use relative imports. We
 # instead add its directory to the import path.
-sys.path.insert(0, os.path.dirname(__file__))
+package_root_dir = pathlib.Path(__file__).parent
+sys.path.insert(0, str(package_root_dir))
 import util.packaging  # noqa: E402
 
 

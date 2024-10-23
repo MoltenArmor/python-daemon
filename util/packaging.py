@@ -16,7 +16,7 @@
     * JSON <https://docs.python.org/3/reference/json.html>
     """
 
-import os.path
+import pathlib
 
 import setuptools
 import setuptools.command.build
@@ -62,7 +62,7 @@ def get_changelog_path(distribution, filename=changelog_filename):
     build_py_command = setuptools.command.build_py.build_py(distribution)
     build_py_command.finalize_options()
     setup_dirname = build_py_command.get_package_dir("")
-    filepath = os.path.join(setup_dirname, filename)
+    filepath = pathlib.Path(setup_dirname, filename)
 
     return filepath
 

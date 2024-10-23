@@ -9,8 +9,7 @@
 
 import builtins
 import collections
-import os
-import os.path
+import pathlib
 import textwrap
 import types
 import unittest.mock
@@ -352,7 +351,7 @@ class get_changelog_path_TestCase(
         if hasattr(self, 'changelog_filename'):
             changelog_filename = self.changelog_filename
 
-        self.expected_result = os.path.join(self.src_root, changelog_filename)
+        self.expected_result = pathlib.Path(self.src_root, changelog_filename)
 
     def test_returns_expected_result(self):
         """ Should return expected result. """
