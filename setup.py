@@ -29,6 +29,10 @@ main_module = util.packaging.main_module_by_name(
         'daemon', fromlist=['_metadata'])
 metadata = main_module._metadata
 
+changelog_infile_path = package_root_dir.joinpath("ChangeLog")
+latest_changelog_entry = util.metadata.get_latest_changelog_entry(
+    changelog_infile_path)
+
 
 test_requirements = [
         "testtools",
@@ -55,11 +59,11 @@ devel_requirements = [
 
 setup_kwargs = dict(
         name=metadata.distribution_name,
+        version=latest_changelog_entry.version,
         packages=find_packages(exclude=["test", "util"]),
         entry_points={
             "setuptools.finalize_distribution_options": [
                 "description_fields = util.packaging:derive_dist_description",
-                "version = util.packaging:derive_version",
                 "maintainer = util.packaging:derive_maintainer",
                 ],
             },

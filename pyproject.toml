@@ -13,6 +13,7 @@ requires = [
     "setuptools >=62.4.0",
     "packaging",
     "docutils",
+    "changelog-chug",
     ]
 
 # Path to the Python object to perform the build.
