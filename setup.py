@@ -35,6 +35,7 @@ test_requirements = [
         "testscenarios >=0.4",
         "coverage",
         "docutils",
+        "changelog-chug",
         ]
 
 build_requirements = [

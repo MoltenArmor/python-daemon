@@ -12,7 +12,11 @@ import textwrap
 import testscenarios
 import testtools
 
+import chug.model
+
 import util.metadata
+
+from .scaffold import mock_builtin_open_for_fake_files
 
 
 class parse_person_field_TestCase(
@@ -179,6 +183,59 @@ class synopsis_and_description_from_docstring_TestCase(
         result = util.metadata.synopsis_and_description_from_docstring(
                 self.test_docstring)
         expected_result = (self.expected_synopsis, self.expected_description)
+        self.assertEqual(expected_result, result)
+
+
+class get_latest_changelog_entry_TestCase(testtools.TestCase):
+    """ Test cases for ‘get_latest_changelog_entry’ function. """
+
+    function_to_test = staticmethod(util.metadata.get_latest_changelog_entry)
+
+    def setUp(self):
+        """ Set up fixtures for this test case. """
+        super().setUp()
+
+        self.test_document_path = "/example/path/ChangeLog"
+        self.setup_mock_changelog_file(path=self.test_document_path)
+
+        self.test_args = [self.test_document_path]
+
+    def setup_mock_changelog_file(self, path):
+        fake_changelog_file_text = textwrap.dedent("""\
+            Change Log
+            ##########
+
+            Version 1.7.2
+            =============
+
+            :Released: 2020-01-10
+            :Maintainer: Cathy Morris <cathy.morris@example.com>
+
+            …
+
+            Version 1.5
+            ===========
+
+            :Released: 2019-08-04
+            :Maintainer: Luis Flores <ayalaian@example.org>
+
+            …
+            """)
+        mock_builtin_open_for_fake_files(
+            self,
+            fake_file_content_by_path={
+                path: fake_changelog_file_text,
+            })
+
+    def test_returns_expected_result(self):
+        """ Should return expected result. """
+        result = self.function_to_test(*self.test_args)
+        expected_result = chug.model.ChangeLogEntry(
+            version="1.7.2",
+            release_date="2020-01-10",
+            maintainer="Cathy Morris <cathy.morris@example.com>",
+            body="…",
+        )
         self.assertEqual(expected_result, result)
 
 

@@ -16,6 +16,8 @@ import inspect
 import pydoc
 import re
 
+import chug.parsers.rest
+
 
 rfc822_person_regex = re.compile(
         r"^(?P<name>[^<]+) <(?P<email>[^>]+)>$")
@@ -72,6 +74,21 @@ def synopsis_and_description_from_docstring(docstring):
         """
     (synopsis, long_description) = pydoc.splitdoc(docstring)
     return (synopsis, long_description)
+
+
+def get_latest_changelog_entry(infile_path):
+    """ Get the latest entry data from the changelog at `infile_path`.
+
+        :param infile_path: The filesystem path (text) from which to read the
+            change log document.
+        :return: The most recent change log entry, as a `chug.ChangeLogEntry`.
+        """
+    document_text = chug.parsers.get_changelog_document_text(infile_path)
+    document = chug.parsers.rest.parse_rest_document_from_text(document_text)
+    entries = chug.parsers.rest.make_change_log_entries_from_document(
+        document)
+    latest_entry = entries[0]
+    return latest_entry
 
 
 # Copyright © 2008–2024 Ben Finney <ben+python@benfinney.id.au>
