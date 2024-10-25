@@ -53,6 +53,11 @@ requires = [
 # Path to the Python object to perform the build.
 build-backend = "setuptools.build_meta"
 
+[tool.setuptools]
+
+# Can the project be safely installed and run from a zip file?
+zip-safe = false
+
 
 [tool.coverage.run]
 

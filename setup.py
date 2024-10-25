@@ -68,7 +68,6 @@ setup_kwargs = dict(
         packages=find_packages(exclude=["test", "util"]),
 
         # Setuptools metadata.
-        zip_safe=False,
         setup_requires=build_requirements,
         install_requires=[
             "setuptools >=62.4.0",
