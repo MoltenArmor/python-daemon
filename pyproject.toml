@@ -5,6 +5,16 @@
 #     <URL:https://peps.python.org/pep-0518/>
 #     <URL:https://peps.python.org/pep-0621/>
 
+[project]
+
+# Names of fields that must be dynamically computed by the build system.
+dynamic = [
+    "name",
+    "description",
+    "version",
+    "maintainers",
+    ]
+
 [build-system]
 
 # Minimum requirements for the build system.
