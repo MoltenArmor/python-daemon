@@ -19,6 +19,8 @@ PYTHON_TWINE_UPLOAD_OPTS ?= \
 	--sign --identity ${RELEASE_SIGNING_KEYID} \
 	--non-interactive
 
+PYTHON_TWINE_CHECK_OPTS ?= --strict
+
 TWINE_DIST_FILES ?= ${DIST_DIR}/*
 
 
@@ -31,7 +33,7 @@ twine-upload: packaging-dist
 .PHONY: twine-check
 twine-check: pip-confirm-dist-dependencies-installed
 twine-check: packaging-dist
-	$(PYTHON_TWINE) check ${TWINE_DIST_FILES}
+	$(PYTHON_TWINE) check ${PYTHON_TWINE_CHECK_OPTS} ${TWINE_DIST_FILES}
 
 
 # Copyright © 2006–2024 Ben Finney <ben+python@benfinney.id.au>
