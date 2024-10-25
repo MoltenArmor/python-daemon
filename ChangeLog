@@ -11,8 +11,8 @@ Version strings conform to the `Semantic Versioning`_ specification,
 Version 3.1.0
 =============
 
-:Released: FUTURE
-:Maintainer: UNKNOWN <unknown@example.org>
+:Released: 2024-10-25
+:Maintainer: Ben Finney <ben+python@benfinney.id.au>
 
 Bugs Fixed:
 
