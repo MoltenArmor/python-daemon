@@ -8,11 +8,21 @@
 [project]
 
 # Names of fields that must be dynamically computed by the build system.
+# FIXME: PEP 621 disallows the ‘name’ to be dynamically generated.
 dynamic = [
     "name",
     "description",
+    "readme",
     "version",
+    "authors",
     "maintainers",
+    "license",
+    "keywords",
+    "classifiers",
+    "urls",
+    "requires-python",
+    "dependencies",
+    "optional-dependencies",
     ]
 
 [build-system]
