@@ -19,6 +19,16 @@ requires = [
 build-backend = "setuptools.build_meta"
 
 
+[tool.coverage.run]
+
+# Source (packages or directories) to measure during execution.
+source = [
+    "daemon",
+    "util",
+    "setup",
+    ]
+
+
 # Local-variables:
 # coding: utf-8
 # mode: conf
