@@ -13,10 +13,7 @@
 import pathlib
 import sys
 
-from setuptools import (
-    find_packages,
-    setup,
-)
+from setuptools import setup
 
 # This module is not inside a package, so we can't use relative imports. We
 # instead add its directory to the import path.
@@ -26,9 +23,7 @@ import util.metadata  # noqa: E402
 import util.packaging  # noqa: E402
 
 
-main_module = util.packaging.main_module_by_name(
-        'daemon', fromlist=['_metadata'])
-metadata = main_module._metadata
+main_module = util.packaging.main_module_by_name('daemon')
 
 changelog_infile_path = package_root_dir.joinpath("ChangeLog")
 latest_changelog_entry = util.metadata.get_latest_changelog_entry(
@@ -40,81 +35,16 @@ description_fields = util.metadata.description_fields_from_docstring(
     util.metadata.docstring_from_object(main_module))
 
 
-test_requirements = [
-        "testtools",
-        "testscenarios >=0.4",
-        "coverage",
-        "docutils",
-        "changelog-chug",
-        ]
-
-build_requirements = [
-        "wheel",
-        "build",
-        "sphinx",
-        ] + test_requirements
-
-dist_requirements = [
-        "twine",
-        ] + build_requirements
-
-devel_requirements = [
-        "isort",
-        ] + dist_requirements
-
-
 setup_kwargs = dict(
-        name=metadata.distribution_name,
         version=latest_changelog_entry.version,
-        packages=find_packages(exclude=["test", "util"]),
-
-        # Setuptools metadata.
-        zip_safe=False,
-        setup_requires=build_requirements,
-        install_requires=[
-            "setuptools >=62.4.0",
-            "lockfile >=0.10",
-            ],
-        python_requires=">=3.7",
-        extras_require={
-            'test': test_requirements,
-            'build': build_requirements,
-            'dist': dist_requirements,
-            'devel': devel_requirements,
-            },
 
         # PyPI metadata.
         description=description_fields.synopsis,
         long_description=description_fields.long_description,
         long_description_content_type=description_fields.content_type,
-        author=metadata.author_name,
-        author_email=metadata.author_email,
         maintainer=maintainer_name,
         maintainer_email=maintainer_email,
-        license=metadata.license,
-        keywords="daemon fork unix".split(),
-        classifiers=[
-            # Reference: <URL:https://pypi.org/classifiers/>
-            "Development Status :: 5 - Production/Stable",
-            "License :: OSI Approved :: Apache Software License",
-            "Operating System :: POSIX",
-            "Programming Language :: Python :: 3",
-            "Intended Audience :: Developers",
-            "Topic :: Software Development :: Libraries :: Python Modules",
-            ],
-        url=metadata.url,
-        project_urls={
-            'Change Log':
-                "https://pagure.io/python-daemon/blob/main/f/ChangeLog",
-            'Source': "https://pagure.io/python-daemon/",
-            'Issue Tracker': "https://pagure.io/python-daemon/issues",
-            },
         )
-
-# Docutils is only required for building, but Setuptools can't distinguish
-# dependencies properly.
-# See <URL:https://github.com/pypa/setuptools/issues/457>.
-setup_kwargs['install_requires'].append("docutils")
 
 
 if __name__ == '__main__':  # pragma: nocover
