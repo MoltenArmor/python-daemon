@@ -30,10 +30,6 @@ requires-python = ">= 3.7"
 # Core dependencies required for the package to operate.
 dependencies = [
 
-    # Framework for working with Python packages.
-    # Documentation: <URL:https://setuptools.pypa.io/>.
-    "setuptools >= 62.4.0",
-
     # Platform-independent file locking module.
     # Documentation: <URL:http://docs.openstack.org/developer/pylockfile>.
     "lockfile >= 0.10",
