@@ -103,7 +103,7 @@ build = [
     "docutils",
 
     # Parser library for project Change Log documents.
-    # Documentation: <URL:https://packaging.pypa.io/>.
+    # Homepage: <URL:https://git.sr.ht/~bignose/changelog-chug>.
     "changelog-chug",
 
     ]
