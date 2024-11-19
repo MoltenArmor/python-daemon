@@ -5,7 +5,7 @@
 # certain conditions; see the end of this file for copyright
 # information, grant of license, and disclaimer of warranty.
 
-""" functionality to work with project metadata.
+""" Functionality to work with project metadata.
 
     This module implements ways to derive various project metadata at build
     time.
