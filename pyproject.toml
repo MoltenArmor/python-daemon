@@ -55,10 +55,7 @@ dynamic = [
 [project.optional-dependencies]
 
 doc = [
-
-    # Python documentation generator.
-    # Documentation: <URL:http://www.sphinx-doc.org/>.
-    "Sphinx ~= 4.4",
+    # Currently no dependencies for documentation.
 
     ]
 
