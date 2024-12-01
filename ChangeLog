@@ -22,6 +22,13 @@ Bugs Fixed:
 
 * Restore inclusion of documentation source in source distribution.
 
+Removed:
+
+* Cease signing releases, as GnuPG signatures no longer supported by PyPI.
+
+  See <URL: https://blog.pypi.org/posts/2023-05-23-removing-pgp/ > for the
+  announcement by PyPI maintainers.
+
 
 Version 3.1.0
 =============
