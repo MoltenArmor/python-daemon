@@ -6,6 +6,7 @@ include LICENSE.*
 include ChangeLog
 recursive-include util *.py
 recursive-include test *.py
+recursive-include doc *
 
 
 # Local variables:

@@ -20,6 +20,8 @@ Bugs Fixed:
 
   Closes: Pagure #97. Thanks to Michał Górny for the report.
 
+* Restore inclusion of documentation source in source distribution.
+
 
 Version 3.1.0
 =============
