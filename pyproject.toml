@@ -185,9 +185,6 @@ license-files = ["LICENSE.*"]
 # Folders that contain the packages (default: ["."])
 where = ["src"]
 
-# Filename globs to exclude from package discovery.
-exclude = ["test", "util"]
-
 
 [tool.coverage.run]
 
