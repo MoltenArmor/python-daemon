@@ -23,6 +23,7 @@ import util.metadata  # noqa: E402
 import util.packaging  # noqa: E402
 
 
+sys.path.insert(0, str(package_root_dir / "src"))
 main_module = util.packaging.main_module_by_name('daemon')
 
 changelog_infile_path = package_root_dir.joinpath("ChangeLog")

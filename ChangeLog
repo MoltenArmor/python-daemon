@@ -14,7 +14,22 @@ Version 3.1.2-alpha1
 :Released: FUTURE
 :Maintainer: UNKNOWN
 
-No changes.
+Bugs Fixed:
+
+* In wheel, distribute only the Python packages that should be installed.
+
+  Closes: Pagure #98.
+
+Changed:
+
+* Migrate project code base from “flat layout” to “src layout”.
+
+  This commits us to a build step for running the test suite, ensuring the
+  built package works.
+
+  See <URL:
+  https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/
+  > for more discussion.
 
 
 Version 3.1.1

@@ -15,7 +15,7 @@ __pycache__/
 /build/
 /dist/
 /.eggs/
-/*.egg-info
+*.egg-info
 
 # Test artifacts.
 /.coverage

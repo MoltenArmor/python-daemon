@@ -19,7 +19,7 @@ TEST_MODULES :=
 CODE_PROGRAMS :=
 
 # Directories with semantic meaning.
-CODE_PACKAGE_DIRS := daemon
+CODE_PACKAGE_DIRS := src/daemon
 DOC_DIR := doc
 BUILD_DIR = $(CURDIR)/build
 DIST_DIR = $(CURDIR)/dist

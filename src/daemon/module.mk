@@ -7,7 +7,7 @@
 
 # Makefile module for ‘daemon’ Python package.
 
-MODULE_DIR := $(CURDIR)/daemon
+MODULE_DIR := $(CURDIR)/src/daemon
 
 CODE_MODULES += $(shell find ${MODULE_DIR}/ -name '*.py')
 

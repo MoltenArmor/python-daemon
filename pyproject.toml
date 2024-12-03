@@ -183,7 +183,7 @@ license-files = ["LICENSE.*"]
 [tool.setuptools.packages.find]
 
 # Folders that contain the packages (default: ["."])
-where = ["."]
+where = ["src"]
 
 # Filename globs to exclude from package discovery.
 exclude = ["test", "util"]
