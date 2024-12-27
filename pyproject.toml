@@ -30,9 +30,7 @@ requires-python = ">= 3.7"
 # Core dependencies required for the package to operate.
 dependencies = [
 
-    # Platform-independent file locking module.
-    # Documentation: <URL:http://docs.openstack.org/developer/pylockfile>.
-    "lockfile >= 0.10",
+    "filelock >= 3.9.0",
 
     ]
 

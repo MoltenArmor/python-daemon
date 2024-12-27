@@ -7,10 +7,11 @@
 
 """ Lockfile behaviour implemented via Unix PID files. """
 
-from lockfile.pidlockfile import PIDLockFile
+from threading import Lock
+from filelock import FileLock
 
 
-class TimeoutPIDLockFile(PIDLockFile):
+class TimeoutFileLock(FileLock):
     """ Lockfile with default timeout, implemented as a Unix PID file.
 
         This uses the ``PIDLockFile`` implementation, with the
@@ -30,9 +31,11 @@ class TimeoutPIDLockFile(PIDLockFile):
             :return: ``None``.
             """
         self.acquire_timeout = acquire_timeout
+        self._thread_lock = Lock()
+        self._lock_file_fd = None
         super().__init__(path, *args, **kwargs)
 
-    def acquire(self, timeout=None, *args, **kwargs):
+    def acquire_lock(self, timeout=None, *args, **kwargs):
         """ Acquire the lock.
 
             :param timeout: Specifies the timeout; see below for valid

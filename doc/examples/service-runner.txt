@@ -93,7 +93,7 @@ example: a `ServiceRunner` class.
 
             self.pidfile = None
             if app.pidfile_path is not None:
-                self.pidfile = make_pidlockfile(
+                self.pidfile = FileLock(
                         app.pidfile_path, app.pidfile_timeout)
             self.daemon_context.pidfile = self.pidfile
 

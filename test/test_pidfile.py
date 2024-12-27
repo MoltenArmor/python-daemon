@@ -16,7 +16,7 @@ import os
 import tempfile
 import unittest.mock
 
-import lockfile
+import filelock
 
 import daemon.pidfile
 
@@ -38,15 +38,15 @@ class FakeFileDescriptorStringIO(io.StringIO):
     def __enter__(self):
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self, *_):
         pass
 
 
 def make_pidlockfile_scenarios():
-    """ Make a collection of scenarios for testing `PIDLockFile` instances.
+    """ Make a collection of scenarios for testing `PIDFileLock` instances.
 
         :return: A collection of scenarios for tests involving
-            `PIDLockfFile` instances.
+            `PIDFileLock` instances.
 
         The collection is a mapping from scenario name to a dictionary of
         scenario attributes.
@@ -134,7 +134,7 @@ def setup_pidfile_fixtures(testcase):
         :param testcase: A `TestCase` instance to decorate.
 
         Decorate the `testcase` with attributes to be fixtures for tests
-        involving `PIDLockFile` instances.
+        involving `PIDFileLock` instances.
         """
     scenarios = make_pidlockfile_scenarios()
     testcase.pidlockfile_scenarios = scenarios
@@ -266,7 +266,7 @@ def setup_pidfile_fixtures(testcase):
 def make_lockfile_method_fakes(scenario):
     """ Make common fake methods for lockfile class.
 
-        :param scenario: A scenario for testing with PIDLockFile.
+        :param scenario: A scenario for testing with PIDFileLock.
         :return: A mapping from normal function name to the corresponding
             fake function.
 
@@ -285,14 +285,14 @@ def make_lockfile_method_fakes(scenario):
 
     def fake_func_acquire(timeout=None):
         if scenario['locking_pid'] is not None:
-            raise lockfile.AlreadyLocked()
+            raise Exception("Already locked")
         scenario['locking_pid'] = scenario['pid']
 
     def fake_func_release():
         if scenario['locking_pid'] is None:
-            raise lockfile.NotLocked()
+            raise Exception("Not locked")
         if scenario['locking_pid'] != scenario['pid']:
-            raise lockfile.NotMyLock()
+            raise Exception("Unlock error")
         scenario['locking_pid'] = None
 
     def fake_func_break_lock():
@@ -313,7 +313,7 @@ def apply_lockfile_method_mocks(mock_lockfile, testcase, scenario):
         :param mock_lockfile: An object providing the `LockFile` interface.
         :param testcase: The `TestCase` instance providing the context for
             the patch.
-        :param scenario: The `PIDLockFile` test scenario to use.
+        :param scenario: The `PIDFileLockr test scenario to use.
 
         Mock the `LockFile` methods of `mock_lockfile`, by applying fake
         methods customised for `scenario`. The mock is does by a patch
@@ -334,13 +334,13 @@ def apply_lockfile_method_mocks(mock_lockfile, testcase, scenario):
 
 
 def setup_pidlockfile_fixtures(testcase, scenario_name=None):
-    """ Set up common fixtures for PIDLockFile test cases.
+    """ Set up common fixtures for PIDFileLock test cases.
 
         :param testcase: The `TestCase` instance to decorate.
-        :param scenario_name: The name of the `PIDLockFile` scenario to use.
+        :param scenario_name: The name of the `PIDFileLock` scenario to use.
 
         Decorate the `testcase` with attributes that are fixtures for test
-        cases involving `PIDLockFile` instances.`
+        cases involving `PIDFileLock` instances.`
         """
 
     setup_pidfile_fixtures(testcase)
@@ -350,13 +350,13 @@ def setup_pidlockfile_fixtures(testcase, scenario_name=None):
             'remove_existing_pidfile',
             ]:
         func_patcher = unittest.mock.patch.object(
-                lockfile.pidlockfile, func_name)
+                filelock.FileLock, func_name)
         func_patcher.start()
         testcase.addCleanup(func_patcher.stop)
 
 
-class TimeoutPIDLockFile_TestCase(scaffold.TestCase):
-    """ Test cases for ‘TimeoutPIDLockFile’ class. """
+class TimeoutFileLock_TestCase(scaffold.TestCase):
+    """ Test cases for ‘TimeoutFileLock’ class. """
 
     def setUp(self):
         """ Set up test fixtures. """
@@ -374,13 +374,13 @@ class TimeoutPIDLockFile_TestCase(scaffold.TestCase):
                 path=self.scenario['pidfile_path'],
                 acquire_timeout=self.scenario['acquire_timeout'],
                 )
-        self.test_instance = daemon.pidfile.TimeoutPIDLockFile(
+        self.test_instance = daemon.pidfile.TimeoutFileLock(
                 **self.test_kwargs)
 
     def test_inherits_from_pidlockfile(self):
-        """ Should inherit from PIDLockFile. """
+        """ Should inherit from PIDFileLock. """
         instance = self.test_instance
-        self.assertIsInstance(instance, lockfile.pidlockfile.PIDLockFile)
+        self.assertIsInstance(instance, filelock.FileLock)
 
     def test_init_has_expected_signature(self):
         """ Should have expected signature for ‘__init__’. """
@@ -388,25 +388,25 @@ class TimeoutPIDLockFile_TestCase(scaffold.TestCase):
         test_func.__name__ = '__init__'
         self.assertFunctionSignatureMatch(
                 test_func,
-                daemon.pidfile.TimeoutPIDLockFile.__init__)
+                daemon.pidfile.TimeoutFileLock.__init__)
 
     def test_has_specified_acquire_timeout(self):
         """ Should have specified ‘acquire_timeout’ value. """
         instance = self.test_instance
         expected_timeout = self.test_kwargs['acquire_timeout']
-        self.assertEqual(expected_timeout, instance.acquire_timeout)
+        self.assertEqual(expected_timeout, instance.timeout)
 
     @unittest.mock.patch.object(
-            lockfile.pidlockfile.PIDLockFile, "__init__",
+            filelock.FileLock, "__init__",
             autospec=True)
     def test_calls_superclass_init(self, mock_init):
         """ Should call the superclass ‘__init__’. """
         expected_path = self.test_kwargs['path']
-        instance = daemon.pidfile.TimeoutPIDLockFile(**self.test_kwargs)
+        instance = daemon.pidfile.TimeoutFileLock(**self.test_kwargs)
         mock_init.assert_called_with(instance, expected_path)
 
     @unittest.mock.patch.object(
-            lockfile.pidlockfile.PIDLockFile, "acquire",
+            filelock.FileLock, "acquire",
             autospec=True)
     def test_acquire_uses_specified_timeout(self, mock_func_acquire):
         """ Should call the superclass ‘acquire’ with specified timeout. """
@@ -417,7 +417,7 @@ class TimeoutPIDLockFile_TestCase(scaffold.TestCase):
         mock_func_acquire.assert_called_with(instance, expected_timeout)
 
     @unittest.mock.patch.object(
-            lockfile.pidlockfile.PIDLockFile, "acquire",
+            filelock.FileLock, "acquire",
             autospec=True)
     def test_acquire_uses_stored_timeout_by_default(self, mock_func_acquire):
         """
